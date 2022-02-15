@@ -3,6 +3,9 @@
 create_symlinks() {
     # Get the directory in which this script lives.
     script_dir=$(dirname "$(readlink -f "$0")")
+    echo "script_dir"
+    echo "$script_dir"
+
 
     # Get a list of all files in this directory that start with a dot.
     files=$(find -maxdepth 1 -type f -name ".*")

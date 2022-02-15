@@ -1,5 +1,3 @@
-[credential]
-	helper = osxkeychain
 [user]
     name = "dan.castillo"
     email = "dancastillo99@gmail.com" 
