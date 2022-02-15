@@ -10,6 +10,8 @@ create_symlinks() {
     # Get a list of all files in this directory that start with a dot.
     files=$(find -maxdepth 1 -type f -name ".*")
 
+    echo $GLCOUD_AUTH >> /workspaces/.codespaces/.persistedshare/dotfiles/local.json
+
     # Create a symbolic link to each file in the home directory.
     for file in $files; do
         name=$(basename $file)
