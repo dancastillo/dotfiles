@@ -1,0 +1,16 @@
+configstore
+expressvpn
+gcloud
+gh
+github-copilot
+op
+simple-update-notifier
+raycast
+zed
+
+**/tags
+**/test.sh
+**/.luarc.json
+**/lazy-lock.json
+
+zsh/work.zsh

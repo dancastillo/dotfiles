@@ -1,0 +1,35 @@
+[user]
+    name = "dan.castillo"
+    email = "dan.castillo@jasper.ai" 
+[alias]
+    a = add
+    aa = add .
+    ammend = commit --amend
+    br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+    c = commit -m
+    cc = commit
+    cod = checkout develop
+    com = checkout master
+    co = checkout
+    cob = checkout -B
+    d = diff
+    del = branch -D
+    f = fetch
+    l = log --oneline -10
+    lg = log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30
+    m = merge
+    pod = pull origin develop
+    pom = pull origin master
+    r = rebase
+    rd = rebase develop
+    rc = rebase --continue
+    ra = rebase --abort
+    rs = rebase --skip
+    s = status
+    undo = reset HEAD~1 --mixed
+[pull]
+	rebase = true
+[init]
+	defaultBranch = develop
+[commit]
+	gpgsign = true

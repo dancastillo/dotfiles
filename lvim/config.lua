@@ -1,0 +1,8 @@
+reload('user.copilot')
+reload('user.keymaps')
+reload('user.lsp')
+reload('user.options')
+reload('user.plugins')
+reload('user.js-ts')
+reload('user.json5')
+reload('user.dap')
