@@ -2,11 +2,14 @@
 -- See `:help mapleader`
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+--vim.keymap.set("n", "<C-Space>", "<cmd>WhichKey \\<space><cr>", { noremap = true, silent = true })
+
 vim.opt.relativenumber = true
 
 vim.keymap.set('n', '<space>f', function()
-      vim.lsp.buf.format { async = true }
-    end, opts)
+	vim.lsp.buf.format { async = true }
+end, { noremap = true, silent = true })
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -53,3 +56,13 @@ vim.opt.incsearch = true
 vim.opt.scrolloff = 8
 
 vim.opt.updatetime = 50
+
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- set termguicolors to enable highlight groups
+vim.opt.termguicolors = true
+
+
+vim.opt.cursorline = true -- highlight the current line

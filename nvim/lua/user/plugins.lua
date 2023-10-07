@@ -8,7 +8,7 @@ if not vim.loop.fs_stat(lazypath) then
     'clone',
     '--filter=blob:none',
     'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
+    '--branch=stable', -- laest stable release
     lazypath,
   }
 end
@@ -60,36 +60,12 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim' },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
-    opts = {
-      -- See `:help gitsigns.txt`
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-      on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
-
-        -- don't override the built-in and fugitive keymaps
-        local gs = package.loaded.gitsigns
-        vim.keymap.set({'n', 'v'}, ']c', function()
-          if vim.wo.diff then return ']c' end
-          vim.schedule(function() gs.next_hunk() end)
-          return '<Ignore>'
-        end, {expr=true, buffer = bufnr, desc = "Jump to next hunk"})
-        vim.keymap.set({'n', 'v'}, '[c', function()
-          if vim.wo.diff then return '[c' end
-          vim.schedule(function() gs.prev_hunk() end)
-          return '<Ignore>'
-        end, {expr=true, buffer = bufnr, desc = "Jump to previous hunk"})
-      end,
-    },
+    event = 'BufEnter',
+    cmd = 'Gitsigns',
   },
 
   {
@@ -106,17 +82,11 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-    },
-  },
-
+{
+  "lukas-reineke/indent-blankline.nvim",
+  event = "VeryLazy",
+  commit = "9637670896b68805430e2f72cf5d16be5b97a22a",
+},
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
@@ -259,7 +229,82 @@ require('lazy').setup({
   'ThePrimeagen/harpoon',
 
   -- Graphql
-  '/jparise/vim-graphql'
+  '/jparise/vim-graphql',
+
+  -- A simple statusline/winbar component that uses LSP to show your current code context. Named after the Indian satellite navigation system.
+  'SmiteshP/nvim-navic',
+
+  -- project.nvim is an all in one neovim plugin written in lua that provides superior project management.
+  {
+    "ahmedkhalf/project.nvim",
+    event = "VeryLazy",
+  },
+
+  {
+    "prichrd/netrw.nvim",
+    event = "VeryLazy",
+  },
+
+  {
+    "NvChad/nvim-colorizer.lua",
+    event = { "BufReadPost", "BufNewFile" },
+  },
+
+  {
+    "stevearc/dressing.nvim",
+    event = "VeryLazy",
+  },
+
+  {
+    "j-hui/fidget.nvim",
+    branch = "legacy",
+  },
+
+  {
+    "andymass/vim-matchup",
+  },
+
+  {
+    "mawkler/modicator.nvim",
+    event = "BufEnter",
+  },
+
+  {
+    "SmiteshP/nvim-navbuddy",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "MunifTanjim/nui.nvim",
+    },
+  },
+
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      -- "rcarriga/nvim-notify",
+    },
+  },
+
+  { "HiPhish/rainbow-delimiters.nvim" },
+
+  {
+    "opalmay/vim-smoothie",
+    event = "VeryLazy",
+  },
+
+  {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+  }
+
   -- 'mxsdev/nvim-dap-vscode-js',
   -- 'mfussenegger/nvim-dap',
   -- 'rcarriga/nvim-dap-ui',

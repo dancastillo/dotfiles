@@ -52,6 +52,3 @@ keymap('n', 'N', 'Nzzzv')
 -- Replace word that was one
 vim.keymap.set("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-vim.keymap.set("n", "<leader><leader>", function()
-    vim.cmd("so")
-end)
