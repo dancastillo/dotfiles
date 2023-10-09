@@ -36,9 +36,9 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
-     -- Additional lua configuration, makes nvim stuff amazing!
+      -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
     },
   },
@@ -82,11 +82,11 @@ require('lazy').setup({
     },
   },
 
-{
-  "lukas-reineke/indent-blankline.nvim",
-  event = "VeryLazy",
-  commit = "9637670896b68805430e2f72cf5d16be5b97a22a",
-},
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "VeryLazy",
+    commit = "9637670896b68805430e2f72cf5d16be5b97a22a",
+  },
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
@@ -163,7 +163,7 @@ require('lazy').setup({
     cmd = 'TroubleToggle',
   },
 
-  -- A telescope.nvim extension that offers intelligent prioritization when selecting files from 
+  -- A telescope.nvim extension that offers intelligent prioritization when selecting files from
   -- your editing history.
   -- As the extension learns your editing habits over time, the sorting of the list is dynamically
   -- altered to prioritize the files you're likely to need.
@@ -200,7 +200,7 @@ require('lazy').setup({
 
   {
     'zbirenbaum/copilot-cmp',
-    config = function ()
+    config = function()
       require('copilot_cmp').setup()
     end
   },
@@ -217,7 +217,8 @@ require('lazy').setup({
   },
 
   -- Buffer as tabs like modern IDE
-  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
+  { 'akinsho/bufferline.nvim',         version = "*",                                      dependencies =
+  'nvim-tree/nvim-web-devicons' },
 
 
   -- Formatter
@@ -303,10 +304,25 @@ require('lazy').setup({
   {
     "goolord/alpha-nvim",
     event = "VimEnter",
+  },
+
+  'mfussenegger/nvim-dap',
+
+  'mxsdev/nvim-dap-vscode-js',
+
+  {
+    "microsoft/vscode-js-debug",
+    opt = true,
+    run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+  },
+
+  { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} },
+
+  {
+    'Joakker/lua-json5',
+    run = './install.sh'
   }
 
-  -- 'mxsdev/nvim-dap-vscode-js',
-  -- 'mfussenegger/nvim-dap',
   -- 'rcarriga/nvim-dap-ui',
   -- 'theHamsta/nvim-dap-virtual-text',
   -- 'jackMort/ChatGPT.nvim',
