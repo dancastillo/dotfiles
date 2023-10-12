@@ -83,11 +83,11 @@ require('lazy').setup({
   },
 
   {
-    "lukas-reineke/indent-blankline.nvim",
-    event = "VeryLazy",
-    commit = "9637670896b68805430e2f72cf5d16be5b97a22a",
+    'lukas-reineke/indent-blankline.nvim',
+    event = 'VeryLazy',
+    commit = '9637670896b68805430e2f72cf5d16be5b97a22a',
   },
-  -- "gc" to comment visual regions/lines
+  -- 'gc' to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
@@ -120,7 +120,7 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
-  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
+  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional 'plugins' for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
   -- require 'kickstart.plugins.autoformat',
@@ -176,7 +176,7 @@ require('lazy').setup({
   -- as possible.
   {
     'smoka7/hop.nvim',
-    version = "*",
+    version = '*',
     opts = {},
   },
 
@@ -212,12 +212,12 @@ require('lazy').setup({
   -- Auto close pairs {}[]()
   {
     'windwp/nvim-autopairs',
-    event = "InsertEnter",
+    event = 'InsertEnter',
     opts = {} -- this is equalent to setup({}) function
   },
 
   -- Buffer as tabs like modern IDE
-  { 'akinsho/bufferline.nvim',         version = "*",                                      dependencies =
+  { 'akinsho/bufferline.nvim',         version = '*',                                      dependencies =
   'nvim-tree/nvim-web-devicons' },
 
 
@@ -237,73 +237,73 @@ require('lazy').setup({
 
   -- project.nvim is an all in one neovim plugin written in lua that provides superior project management.
   {
-    "ahmedkhalf/project.nvim",
-    event = "VeryLazy",
+    'ahmedkhalf/project.nvim',
+    event = 'VeryLazy',
   },
 
   {
-    "prichrd/netrw.nvim",
-    event = "VeryLazy",
+    'prichrd/netrw.nvim',
+    event = 'VeryLazy',
   },
 
   {
-    "NvChad/nvim-colorizer.lua",
-    event = { "BufReadPost", "BufNewFile" },
+    'NvChad/nvim-colorizer.lua',
+    event = { 'BufReadPost', 'BufNewFile' },
   },
 
   {
-    "stevearc/dressing.nvim",
-    event = "VeryLazy",
+    'stevearc/dressing.nvim',
+    event = 'VeryLazy',
   },
 
   {
-    "j-hui/fidget.nvim",
-    branch = "legacy",
+    'j-hui/fidget.nvim',
+    branch = 'legacy',
   },
 
   {
-    "andymass/vim-matchup",
+    'andymass/vim-matchup',
   },
 
   {
-    "mawkler/modicator.nvim",
-    event = "BufEnter",
+    'mawkler/modicator.nvim',
+    event = 'BufEnter',
   },
 
   {
-    "SmiteshP/nvim-navbuddy",
+    'SmiteshP/nvim-navbuddy',
     dependencies = {
-      "SmiteshP/nvim-navic",
-      "MunifTanjim/nui.nvim",
+      'SmiteshP/nvim-navic',
+      'MunifTanjim/nui.nvim',
     },
   },
 
   {
-    "folke/noice.nvim",
-    event = "VeryLazy",
+    'folke/noice.nvim',
+    event = 'VeryLazy',
     opts = {
       -- add any options here
     },
     dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
+      -- if you lazy-load any plugin below, make sure to add proper `module='...'` entries
+      'MunifTanjim/nui.nvim',
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      -- "rcarriga/nvim-notify",
+      -- 'rcarriga/nvim-notify',
     },
   },
 
-  { "HiPhish/rainbow-delimiters.nvim" },
+  { 'HiPhish/rainbow-delimiters.nvim' },
 
   {
-    "opalmay/vim-smoothie",
-    event = "VeryLazy",
+    'opalmay/vim-smoothie',
+    event = 'VeryLazy',
   },
 
   {
-    "goolord/alpha-nvim",
-    event = "VimEnter",
+    'goolord/alpha-nvim',
+    event = 'VimEnter',
   },
 
   'mfussenegger/nvim-dap',
@@ -311,18 +311,21 @@ require('lazy').setup({
   'mxsdev/nvim-dap-vscode-js',
 
   {
-    "microsoft/vscode-js-debug",
+    'microsoft/vscode-js-debug',
     opt = true,
-    run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+    run = 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out'
   },
 
-  { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} },
+  { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'} },
 
   {
     'Joakker/lua-json5',
     run = './install.sh'
-  }
+  },
 
+  {
+    'notjedi/nvim-rooter.lua',
+  },
   -- 'rcarriga/nvim-dap-ui',
   -- 'theHamsta/nvim-dap-virtual-text',
   -- 'jackMort/ChatGPT.nvim',

@@ -52,8 +52,14 @@ require("lualine").setup {
     -- lualine_y = { "filetype" },
     -- lualine_z = { "progress" },
     lualine_a = { "mode" },
-    lualine_b = { "branch" },
-    lualine_c = { diff },
+    lualine_b = { "branch", diff },
+
+    lualine_c = {
+      {
+        'buffers',
+      }
+    },
+
     lualine_x = { "diagnostics", copilot },
     lualine_y = { "filetype" },
     lualine_z = { "progress" },

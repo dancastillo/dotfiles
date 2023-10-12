@@ -18,7 +18,8 @@ local icons = require "user.icons"
 
 require("nvim-tree").setup {
   on_attach = my_on_attach,
-  sync_root_with_cwd = true,
+  sync_root_with_cwd = false,
+  respect_buf_cwd = false,
   renderer = {
     add_trailing = false,
     group_empty = false,
@@ -72,8 +73,14 @@ require("nvim-tree").setup {
   update_focused_file = {
     enable = true,
     debounce_delay = 15,
-    update_root = true,
+    update_root = false,
     ignore_list = {},
+  },
+
+  actions = {
+    change_dir = {
+      enable = false
+    }
   },
 
   diagnostics = {
