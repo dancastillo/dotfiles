@@ -20,10 +20,17 @@ require("nvim-tree").setup {
   on_attach = my_on_attach,
   sync_root_with_cwd = false,
   respect_buf_cwd = false,
+  view = {
+    width = 45,
+  },
+  filters = {
+    dotfiles = false,
+    git_ignored = false,
+  },
   renderer = {
     add_trailing = false,
     group_empty = false,
-    highlight_git = false,
+    highlight_git = true,
     full_name = false,
     highlight_opened_files = "none",
     root_folder_label = ":t",
