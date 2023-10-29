@@ -38,7 +38,7 @@ local mappings = {
     r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
     s = { "<cmd>lua require'dap'.continue()<cr>", "Start" },
     q = { "<cmd>lua require'dap'.close()<cr>", "Quit" },
-    U = { "<cmd>lua require'dapui'.toggle({reset = true})<cr>", "Toggle UI" },
+    U = { "<cmd>lua require'dapui'.toggle({ reset = true })<cr>", "Toggle UI" },
   },
   p = {
     name = "Plugins",

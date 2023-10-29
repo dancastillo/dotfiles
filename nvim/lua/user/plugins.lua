@@ -15,6 +15,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
+
+    {
+      'Joakker/lua-json5',
+      lazy = false,
+      build = './install.sh'
+    },
+
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
@@ -317,11 +324,6 @@ require('lazy').setup({
   },
 
   { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'} },
-
-  {
-    'Joakker/lua-json5',
-    run = './install.sh'
-  },
 
   {
     'notjedi/nvim-rooter.lua',

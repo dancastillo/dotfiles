@@ -11,29 +11,30 @@ vim.keymap.set('n', '<leader>B', function()
 end)
 
 require("dap-vscode-js").setup({
-  -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+  node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
   -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
   debugger_path = vim.fn.stdpath('data') .. "/lazy/vscode-js-debug",
   -- debugger_cmd = { "extension" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
   adapters = { 'chrome', 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost', 'node', 'chrome' }, -- which adapters to register in nvim-dap
-  -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
-  -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
+  -- log_file_path = "(stdpath cache)/dap_vscode_js.log", -- Path for file logging
+  -- log_file_level = 1, -- Logging level for output to file. Set to false to disable file logging.
   -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
 })
 
 local js_based_languages = { "typescript", "javascript", "typescriptreact" }
 
 for _, language in ipairs(js_based_languages) do
-  -- print("(runtimedir)")
-  -- print("(runtimedir)/site/pack/packer/opt/vscode-js-debug")
-
-  require("dap").configurations[language] = {
+  dap.configurations[language] = {
     {
       type = "pwa-node",
-      request = "launch",
-      name = "Launch file",
-      program = "${file}",
-      cwd = "${workspaceFolder}",
+      name = "Debugger - API",
+      request = "attach",
+      address = "localhost",
+      port = 9229,
+      restart = true,
+      localRoot = "${workspaceFolder}",
+      remoteRoot = "/usr/app",
+      sourceMaps = true,
     },
     {
       type = "pwa-node",
@@ -67,11 +68,19 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close({})
 end
 
-vim.keymap.set('n', '<leader>ui', require 'dapui'.toggle)
-
+-- require('dap.ext.vscode').json_decode = require("json5").parse
+-- require('dap.ext.vscode').load_launchjs()
 -- require('dap.ext.vscode').load_launchjs(nil,
---   { ['pwa-node'] = js_based_languages,
---     ['node'] = js_based_languages,
---     ['chrome'] = js_based_languages,
---     ['pwa-chrome'] = js_based_languages }
+--   {
+--     node = {
+--       ['pwa-node'] = js_based_languages,
+--       ['node'] = js_based_languages,
+--       ['chrome'] = js_based_languages,
+--       ['pwa-chrome'] = js_based_languages,
+--       -- ['pwa-msedge'] = js_based_languages,
+--       -- ['pwa-extensionHost'] = js_based_languages,
+--       -- ['node-terminal'] = js_based_languages
+--
+--     }
+--   }
 -- )
