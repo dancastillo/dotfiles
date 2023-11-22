@@ -21,7 +21,7 @@ require("nvim-tree").setup {
   sync_root_with_cwd = false,
   respect_buf_cwd = false,
   view = {
-    width = 45,
+    width = 50,
   },
   filters = {
     dotfiles = false,

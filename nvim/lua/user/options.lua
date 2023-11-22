@@ -66,3 +66,10 @@ vim.opt.termguicolors = true
 
 
 vim.opt.cursorline = true -- highlight the current line
+
+vim.opt.shiftwidth = 2 -- size of an indents
+vim.opt.tabstop = 2 -- number of spaces tabs count
+vim.opt.expandtab = true
+
+-- do not create swap filetype
+vim.opt.swapfile = false
