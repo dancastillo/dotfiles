@@ -328,6 +328,8 @@ require('lazy').setup({
   {
     'notjedi/nvim-rooter.lua',
   },
+
+  'prisma/vim-prisma'
   -- 'rcarriga/nvim-dap-ui',
   -- 'theHamsta/nvim-dap-virtual-text',
   -- 'jackMort/ChatGPT.nvim',
