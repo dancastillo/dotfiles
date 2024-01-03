@@ -1,3 +1,4 @@
+print("copilot.lua")
 require('copilot').setup({
   panel = {
     enabled = true,
