@@ -202,11 +202,14 @@ require('lazy').setup({
   -- 'github/copilot.vim',
   {
     'zbirenbaum/copilot.lua',
-    event = { 'VimEnter' },
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    -- event = { 'VimEnter' },
   },
 
   {
     'zbirenbaum/copilot-cmp',
+    after = { "copilot.lua" },
     config = function()
       require('copilot_cmp').setup()
     end

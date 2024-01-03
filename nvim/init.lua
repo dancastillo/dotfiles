@@ -1,3 +1,6 @@
+vim.opt.cursorline = true -- highlight the current line
+vim.o.number = true
+-- vim.lsp.set_log_level("debug")
 --  NOTE: Must happen before plugins are required  otherwise wrong leader will be used
 require 'user.options'
 require 'user.keymaps'

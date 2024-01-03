@@ -39,6 +39,7 @@ require('copilot').setup({
     ["."] = false,
   },
   copilot_node_command = 'node', -- Node.js version must be > 16.x
+  -- copilot_node_command = vim.fn.expand("$HOME") .. "/.volta/bin/node", -- Node.js version must be > 18.x
   server_opts_overrides = {},
 })
 
