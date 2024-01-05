@@ -1,11 +1,30 @@
--- local mark = require('harpoon.mark')
--- local ui = require('harpoon.ui')
+local M = {
+  "ThePrimeagen/harpoon",
+  event = "VeryLazy",
+  dependencies = {
+    { "nvim-lua/plenary.nvim" },
+  },
+}
 
--- vim.keymap.set('n', '<leader>a', mark.add_file)
--- vim.keymap.set('n', '<C-e>', ui.toggle_quick_menu)
+function M.config()
+  local keymap = vim.keymap.set
+  local opts = { noremap = true, silent = true }
 
--- vim.keymap.set('n', '<C-h>', function() ui.nav_file(1) end)
--- vim.keymap.set('n', '<C-t>', function() ui.nav_file(2) end)
--- vim.keymap.set('n', '<C-n>', function() ui.nav_file(3) end)
--- vim.keymap.set('n', '<C-s>', function() ui.nav_file(4) end)
+  keymap("n", "<s-m>", "<cmd>lua require('user.extras.harpoon').mark_file()<cr>", opts)
+  keymap("n", "<TAB>", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", opts)
+  vim.api.nvim_create_autocmd({ "filetype" }, {
+    pattern = "harpoon",
+    callback = function()
+      vim.cmd [[highlight link HarpoonBorder TelescopeBorder]]
+      -- vim.cmd [[setlocal nonumber]]
+      -- vim.cmd [[highlight HarpoonWindow guibg=#313132]]
+    end,
+  })
+end
 
+function M.mark_file()
+  require("harpoon.mark").add_file()
+  vim.notify "󱡅  marked file"
+end
+
+return M
