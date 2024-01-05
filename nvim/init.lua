@@ -1,13 +1,13 @@
-vim.opt.cursorline = true -- highlight the current line
-vim.o.number = true
+-- vim.opt.cursorline = true -- highlight the current line
+-- vim.o.number = true
+
+-- Lsp debug logs
 -- vim.lsp.set_log_level("debug")
 require "user.launch"
 require "user.options"
 require "user.keymaps"
 require "user.autocmds"
 
--- -- require "user.bufferline"
--- require "user.bufdelete"
 spec "user.colorscheme"
 spec "user.devicons"
 spec "user.treesitter"
@@ -28,6 +28,12 @@ spec "user.gitsigns"
 spec "user.alpha"
 spec "user.vim-tmux-navigator"
 spec "user.graphql"
+spec "user.diffview"
+spec "user.netrw"
+spec "user.project"
+spec "user.indentline"
+spec "user.bufdelete"
+
  --extra
 spec "user.tabby"
 spec "user.neoscroll"
@@ -37,27 +43,25 @@ spec "user.ufo"
 spec "user.lab"
 spec "user.cellular-automaton"
 spec "user.eyeliner"
+spec "user.toggleterm"
+spec "user.colorizer"
+spec "user.dressing"
+spec "user.oil"
+spec "user.fidget"
+spec "user.gitlinker"
+spec "user.todo-comments"
+spec "user.noice"
 spec "user.copilot" --last
 
 -- require "user.json5"
 -- require "user.dap"
--- require "user.indent-blankline"
 -- require "user.lualine"
--- require "user.netrw"
--- require "user.project"
 -- require "user.rooter"
--- require "user.yank-highlight"
 --
--- require "user.extras.colorizer"
--- require "user.extras.dressing"
--- require "user.extras.fidget"
 -- require "user.extras.matchup"
 -- require "user.extras.modicator"
 -- require "user.extras.navbuddy"
--- require "user.extras.noice"
 -- require "user.extras.rainbow"
 -- require "user.extras.smoothie"
---
 
 require "user.lazy"
-
