@@ -1,3 +1,9 @@
+local M = {
+  "ahmedkhalf/project.nvim",
+  event = "VeryLazy",
+}
+
+function M.config()
   require("project_nvim").setup {
     active = true,
     on_config_done = nil,
@@ -15,3 +21,6 @@
   local keymap = vim.api.nvim_set_keymap
 
   keymap("n", "<c-p>", ":lua require('telescope').extensions.projects.projects()<CR>", opts)
+end
+
+return M

@@ -234,9 +234,6 @@ require('lazy').setup({
   -- Formatter
   { 'jose-elias-alvarez/null-ls.nvim', commit = '0010ea927ab7c09ef0ce9bf28c2b573fc302f5a7' },
 
-  -- -- Color scheme
-  'luisiacc/gruvbox-baby',
-
   'ThePrimeagen/harpoon',
 
   -- Graphql

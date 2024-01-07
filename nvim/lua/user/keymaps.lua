@@ -20,9 +20,9 @@ keymap('n', 'gl', vim.diagnostic.open_float, { desc = 'Open floating diagnostic 
 keymap('n', 'gk', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 
--- Navigation Renmap
-keymap('n', '<C-j>', '<C-w>j', opts)
-keymap('n', '<C-k>', '<C-w>k', opts)
+-- -- Navigation Renmap
+-- keymap('n', '<C-j>', '<C-w>j', opts)
+-- keymap('n', '<C-k>', '<C-w>k', opts)
 
 -- Navigate Buffers
 keymap('n', '<S-l>', ':bnext<CR>', opts)
