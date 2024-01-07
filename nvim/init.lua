@@ -33,8 +33,12 @@ spec "user.netrw"
 spec "user.project"
 spec "user.indentline"
 spec "user.bufdelete"
+spec "user.rooter"
+spec "user.autopairs"
+spec "user.surround"
+spec "user.markdown-preview"
 
- --extra
+--extra
 spec "user.tabby"
 spec "user.neoscroll"
 spec "user.illuminate"
@@ -51,16 +55,15 @@ spec "user.fidget"
 spec "user.gitlinker"
 spec "user.todo-comments"
 spec "user.noice"
+spec "user.neotab"
+spec "user.navbuddy"
 spec "user.copilot" --last
 
 -- require "user.json5"
 -- require "user.dap"
--- require "user.lualine"
--- require "user.rooter"
 --
 -- require "user.extras.matchup"
 -- require "user.extras.modicator"
--- require "user.extras.navbuddy"
 -- require "user.extras.rainbow"
 -- require "user.extras.smoothie"
 

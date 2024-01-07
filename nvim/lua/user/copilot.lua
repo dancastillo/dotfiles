@@ -3,12 +3,12 @@ local M = {
   cmd = "Copilot",
   event = "InsertEnter",
   dependencies = {
-    "zbirenbaum/copilot-cmp"
+    "zbirenbaum/copilot-cmp",
   },
 }
 
 function M.config()
-  require("copilot").setup({
+  require("copilot").setup {
     panel = {
       enabled = true,
       auto_refresh = false,
@@ -17,11 +17,11 @@ function M.config()
         jump_next = "]]",
         accept = "<CR>",
         refresh = "gr",
-        open = "<M-CR>"
+        open = "<M-CR>",
       },
       layout = {
         position = "bottom", -- | top | left | right
-        ratio = 0.4
+        ratio = 0.4,
       },
     },
     suggestion = {
@@ -38,8 +38,8 @@ function M.config()
       },
     },
     filetypes = {
-      yaml = false,
-      markdown = false,
+      -- yaml = false,
+      -- markdown = false,
       help = false,
       gitcommit = false,
       gitrebase = false,
@@ -51,19 +51,19 @@ function M.config()
     copilot_node_command = "node", -- Node.js version must be > 16.x
     -- copilot_node_command = vim.fn.expand("$HOME") .. "/.volta/bin/node", -- Node.js version must be > 18.x
     server_opts_overrides = {},
-  })
+  }
 
-  vim.keymap.set("i", "<Tab>", function()
-    if require("copilot.suggestion").is_visible() then
-      require("copilot.suggestion").accept()
-    else
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
-    end
-  end, {
-    silent = true,
-  })
+  -- vim.keymap.set("i", "<Tab>", function()
+  --   if require("copilot.suggestion").is_visible() then
+  --     require("copilot.suggestion").accept()
+  --   else
+  --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+  --   end
+  -- end, {
+  --   silent = true,
+  -- })
 
-  require('copilot_cmp').setup()
+  require("copilot_cmp").setup()
 end
 
 return M

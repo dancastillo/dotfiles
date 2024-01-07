@@ -56,6 +56,7 @@ function M.config()
   end
 
   local icons = require "user.icons"
+  local copilot_suggestion = require "copilot.suggestion"
 
   cmp.setup {
     snippet = {
@@ -81,7 +82,9 @@ function M.config()
       -- Set `select` to `false` to only confirm explicitly selected items.
       ["<CR>"] = cmp.mapping.confirm { select = true },
       ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
+        if copilot_suggestion.is_visible() then
+          copilot_suggestion.accept()
+        elseif cmp.visible() then
           cmp.select_next_item()
         elseif luasnip.expandable() then
           luasnip.expand()

@@ -86,8 +86,8 @@ function M.config()
         winblend = 0,
       },
       mappings = {
-        scrollU = "<C-k>",
-        scrollD = "<C-j>",
+        scrollU = "<C-p>",
+        scrollD = "<C-n>",
         jumpTop = "[",
         jumpBot = "]",
       },

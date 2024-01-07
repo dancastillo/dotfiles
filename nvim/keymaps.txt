@@ -1,0 +1,88 @@
+# harpoon
+
+shift m    - to mark file
+
+<leader> h - to see marked files
+
+
+-----------------
+
+
+# oil
+file explorer popup window
+
+(-) hyphen - open popup window
+
+
+-----------------
+
+
+# ufc
+folding code
+
+za - fold
+
+zR - openAllFolds
+
+zM - closeAllFolds
+
+
+-----------------
+
+
+# lab
+code runner for files
+console.log(1 + 2) // 3 <- lab
+
+:Lab code run	- Run or resume the code runner on the current file.
+
+:Lab code stop -	Stop the code runner on the current file.
+
+
+-----------------
+
+# navbuddy
+
+<leader> o - open navbuddy
+
+
+-----------------
+
+# vim surround
+https://github.com/tpope/vim-surround
+
+yUse surround inner word = ysiw
+
+change surrouding ] to ) = cs])
+
+cs"' - It's easiest to explain with examples.  Press `cs"'` inside
+
+    "Hello world!"   ->     'Hello world!'
+
+
+cs'<q> - Now press `cs'<q>` to change it to
+
+    <q>Hello world!</q>
+
+cst" - To go full circle, press `cst"` to get
+
+    "Hello world!"
+
+ds" - To remove the delimiters entirely, press `ds"`.
+
+    Hello world!
+
+ysiw] - Now with the cursor on "Hello", press `ysiw]` (`iw` is a text object).
+
+    [Hello] world!
+
+cs]{ -> Let's make that braces and add some space (use `}` instead of `{` for no
+space): `cs]{`
+
+    { Hello } world!
+
+yssb - Now wrap the entire line in parentheses with `yssb` or `yss)`.
+
+    ({ Hello } world!)
+
+

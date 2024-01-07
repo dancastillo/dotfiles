@@ -7,23 +7,36 @@ local M = {
 function M.config()
   local wk = require "which-key"
   wk.register {
-    ["<leader>bb"] = { "<cmd>Telescope buffers previewer=false<cr>", "Find" },
+    ["<leader>sb"] = { "<cmd>Telescope buffers<cr>", "Buffers" },
+    ["<leader>sf"] = { "<cmd>Telescope find_files<cr>", "Find files" },
+    ["<leader>sp"] = { "<cmd>lua require('telescope').extensions.projects.projects()<cr>", "Projects" },
+    ["<leader>sg"] = { "<cmd>Telescope live_grep<cr>", "Find Grep" },
+    ["<leader>sw"] = { "<cmd>Telescope grep_string<cr>", "Find Word" },
+    ["<leader>sh"] = { "<cmd>Telescope help_tags<cr>", "Help" },
+    ["<leader>sl"] = { "<cmd>Telescope resume<cr>", "Resume Search" },
+    ["<leader>sk"] = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
+    ["<leader>sC"] = { "<cmd>Telescope commands<cr>", "Commands" },
+    ["<leader>sc"] = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
+    ["<leader>sH"] = { "<cmd>Telescope highlights<cr>", "Highlights" },
+    ["<leader>sr"] = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
+    ["<leader>sR"] = { "<cmd>Telescope registers<cr>", "Registers" },
+    -- ["<leader>sb"] = { "<cmd>Telescope buffers previewer=false<cr>", "Find" },
 
-    ["<leader>fb"] = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-    ["<leader>fc"] = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
-    ["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find files" },
-    ["<leader>fp"] = { "<cmd>lua require('telescope').extensions.projects.projects()<cr>", "Projects" },
-    ["<leader>ft"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
-    ["<leader>fs"] = { "<cmd>Telescope grep_string<cr>", "Find String" },
-    ["<leader>fh"] = { "<cmd>Telescope help_tags<cr>", "Help" },
-    ["<leader>fH"] = { "<cmd>Telescope highlights<cr>", "Highlights" },
-    ["<leader>fi"] = { "<cmd>lua require('telescope').extensions.media_files.media_files()<cr>", "Media" },
-    ["<leader>fl"] = { "<cmd>Telescope resume<cr>", "Last Search" },
-    ["<leader>fM"] = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
-    ["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
-    ["<leader>fR"] = { "<cmd>Telescope registers<cr>", "Registers" },
-    ["<leader>fk"] = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
-    ["<leader>fC"] = { "<cmd>Telescope commands<cr>", "Commands" },
+    -- ["<leader>fb"] = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
+    -- ["<leader>fc"] = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
+    -- ["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find files" },
+    -- ["<leader>fp"] = { "<cmd>lua require('telescope').extensions.projects.projects()<cr>", "Projects" },
+    -- ["<leader>ft"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
+    -- ["<leader>fs"] = { "<cmd>Telescope grep_string<cr>", "Find String" },
+    -- ["<leader>fh"] = { "<cmd>Telescope help_tags<cr>", "Help" },
+    -- ["<leader>fH"] = { "<cmd>Telescope highlights<cr>", "Highlights" },
+    -- ["<leader>fi"] = { "<cmd>lua require('telescope').extensions.media_files.media_files()<cr>", "Media" },
+    -- ["<leader>fl"] = { "<cmd>Telescope resume<cr>", "Last Search" },
+    -- ["<leader>fM"] = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
+    -- ["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
+    -- ["<leader>fR"] = { "<cmd>Telescope registers<cr>", "Registers" },
+    -- ["<leader>fk"] = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
+    -- ["<leader>fC"] = { "<cmd>Telescope commands<cr>", "Commands" },
 
     ["<leader>go"] = { "<cmd>Telescope git_status<cr>", "Open changed file" },
     ["<leader>gb"] = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
@@ -90,11 +103,16 @@ function M.config()
 
       mappings = {
         i = {
-          ["<C-n>"] = actions.cycle_history_next,
-          ["<C-p>"] = actions.cycle_history_prev,
+          -- ["<C-n>"] = actions.cycle_history_next,
+          -- ["<C-p>"] = actions.cycle_history_prev,
+          --
+          -- ["<C-j>"] = actions.move_selection_next,
+          -- ["<C-k>"] = actions.move_selection_previous,
+          ["<C-j>"] = actions.cycle_history_next,
+          ["<C-k>"] = actions.cycle_history_prev,
 
-          ["<C-j>"] = actions.move_selection_next,
-          ["<C-k>"] = actions.move_selection_previous,
+          ["<C-n>"] = actions.move_selection_next,
+          ["<C-p>"] = actions.move_selection_previous,
         },
         n = {
           ["<esc>"] = actions.close,
@@ -131,6 +149,11 @@ function M.config()
             ["dd"] = actions.delete_buffer,
           },
         },
+      },
+
+      git_files = {
+        hidden = true,
+        show_untracked = true,
       },
 
       planets = {

@@ -34,3 +34,5 @@ alias hpa="kubectl get hpa --all-namespaces"
 alias logs="kubectl logs $1"
 alias describe="kubectl describe $1 $2"
 
+alias vimkeys = "cat ~/.config/nvim/keymaps.txt"
+
