@@ -9,11 +9,12 @@ function M.config()
     on_config_done = nil,
     manual_mode = false,
     detection_methods = { "pattern" },
-    patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pom.xml" },
+    -- patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pom.xml" },
+    patterns = { ".git" },
     ignore_lsp = {},
-    exclude_dirs = {},
+    exclude_dirs = { "libs/*", "node_modules" },
     show_hidden = false,
-    silent_chdir = true,
+    silent_chdir = false,
     scope_chdir = "global",
   }
 

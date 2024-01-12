@@ -86,8 +86,8 @@ require("nvim-tree").setup {
 
   actions = {
     change_dir = {
-      enable = false
-    }
+      enable = false,
+    },
   },
 
   diagnostics = {
@@ -107,4 +107,3 @@ require("nvim-tree").setup {
     },
   },
 }
-

@@ -2,7 +2,7 @@ local M = {
   "nvimtools/none-ls.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
-  }
+  },
 }
 
 function M.config()
@@ -11,25 +11,44 @@ function M.config()
   local formatting = null_ls.builtins.formatting
   local diagnostics = null_ls.builtins.diagnostics
 
+  -- local helpers = require "null-ls.helpers"
+  -- local cmd_resolver = require "null-ls.helpers.command_resolver"
+  -- local methods = require "null-ls.methods"
+  -- local FORMATTING = methods.internal.FORMATTING
+
+  -- local standardjs = helpers.make_builtin {
+  --   name = "standardjs",
+  --   method = FORMATTING,
+  --   filetypes = { "javascript", "javascriptreact" },
+  --   generator_opts = {
+  --     command = "standard",
+  --     args = { "--fix" },
+  --     to_stdin = true,
+  --     -- dynamic_command = cmd_resolver.from_node_modules,
+  --   },
+  --   factory = helpers.formatter_factory,
+  -- }
+
   null_ls.setup {
     sources = {
-      formatting.prettier.with({
+      -- standardjs,
+      formatting.prettier.with {
         filetypes = {
-          'javascript',
-          'typescript',
-          'css',
-          'scss',
-          'html',
-          'json',
-          'yaml',
-          'markdown',
-          'graphql',
-          'md',
-          'txt',
-          'graphql',
+          "javascript",
+          "typescript",
+          "css",
+          "scss",
+          "html",
+          "json",
+          "yaml",
+          "markdown",
+          "graphql",
+          "md",
+          "txt",
+          "graphql",
         },
-        only_local = 'node_modules/.bin',
-      }),
+        only_local = "node_modules/.bin",
+      },
       formatting.stylua,
       -- formatting.prettier,
       -- formatting.prettier.with {
@@ -37,6 +56,7 @@ function M.config()
       --   -- extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
       -- },
       -- null_ls.builtins.diagnostics.eslint,
+      -- null_ls.builtins.diagnostics.standardjs,
       null_ls.builtins.completion.spell,
     },
     on_attach = function(client, bufnr)
@@ -55,4 +75,3 @@ function M.config()
 end
 
 return M
-

@@ -4,7 +4,6 @@ local M = {
 }
 
 function M.config()
-
   local wk = require "which-key"
   wk.register {
     ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
@@ -31,7 +30,8 @@ function M.config()
   require("nvim-tree").setup {
     on_attach = my_on_attach,
     hijack_netrw = false,
-    sync_root_with_cwd = true,
+    sync_root_with_cwd = false,
+    respect_buf_cwd = false,
     view = {
       relativenumber = true,
       width = 50,
@@ -92,9 +92,21 @@ function M.config()
     },
     update_focused_file = {
       enable = true,
-      debounce_delay = 15,
-      update_root = true,
+      -- Update the root directory of the tree if the file is not under current
+      -- root directory. It prefers vim's cwd and `root_dirs`.
+      -- Otherwise it falls back to the folder containing the file.
+      -- Only relevant when `update_focused_file.enable` is `true`
+      -- Marking for future reference: do not update root
+      update_root = false,
       ignore_list = {},
+      update_cwd = false,
+      debounce_delay = 15,
+    },
+
+    actions = {
+      change_dir = {
+        enable = false,
+      },
     },
 
     diagnostics = {
@@ -111,6 +123,23 @@ function M.config()
         info = icons.diagnostics.BoldInformation,
         warning = icons.diagnostics.BoldWarning,
         error = icons.diagnostics.BoldError,
+      },
+    },
+
+    log = {
+      enable = true,
+      truncate = true,
+      types = {
+        diagnostics = true,
+        git = true,
+        profile = true,
+        watcher = true,
+      },
+    },
+
+    filesystem_watchers = {
+      ignore_dirs = {
+        "node_modules",
       },
     },
   }
