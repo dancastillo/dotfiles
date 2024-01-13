@@ -36,6 +36,13 @@ spec "user.bufdelete"
 spec "user.autopairs"
 spec "user.surround"
 spec "user.markdown-preview"
+spec "user.neotest"
+-- nvim-dap
+spec "user.vscode-js-debug"
+spec "user.dap"
+spec "user.dap-ui"
+spec "user.dap-js"
+spec "user.json5"
 
 --extra
 spec "user.tabby"

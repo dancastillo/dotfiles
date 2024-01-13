@@ -1,30 +1,34 @@
 -- [[ Configure Telescope ]]
-local actions = require 'telescope.actions'
+local actions = require "telescope.actions"
 
-require('telescope').setup {
+require("telescope").setup {
   defaults = {
     vimgrep_arguments = {
-      'rg',
-      '--hidden',
-      '--color=never',
-      '--no-heading',
-      '--with-filename',
-      '--line-number',
-      '--column',
-      '--smart-case'
+      "rg",
+      "--hidden",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
     },
     file_ignore_patterns = {
-      'node_modules', 'build', 'dist', 'yarn.lock', 'package-lock.json'
+      "node_modules",
+      "build",
+      "dist",
+      "yarn.lock",
+      "package-lock.json",
     },
     mappings = {
       i = {
-        ['<C-u>'] = false,
-        ['<C-d>'] = false,
+        ["<C-u>"] = false,
+        ["<C-d>"] = false,
       },
       n = {
-        ['<esc>'] = actions.close,
-        ['q'] = actions.close,
-      }
+        ["<esc>"] = actions.close,
+        ["q"] = actions.close,
+      },
     },
   },
   pickers = {
@@ -49,7 +53,7 @@ require('telescope').setup {
 }
 
 -- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
+pcall(require("telescope").load_extension, "fzf")
 
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
+vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })

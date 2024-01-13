@@ -1,3 +1,22 @@
+# windows
+
+# Focus window - open in new tab
+Ctrl w + T
+
+# Go to next tab
+gt - (go tab)
+
+
+Next tab: gt
+
+Prior tab: gT
+
+Numbered tab: nnn gt
+
+
+-----------------
+
+
 # harpoon
 
 shift m    - to mark file
