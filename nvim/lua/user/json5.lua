@@ -1,6 +1,6 @@
 local M = {
   "Joakker/lua-json5",
-  build = "./install.sh"
+  build = "./install.sh",
 }
 
 function M.config()

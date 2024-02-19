@@ -1,8 +1,6 @@
--- vim.opt.cursorline = true -- highlight the current line
--- vim.o.number = true
-
 -- Lsp debug logs
 -- vim.lsp.set_log_level("debug")
+
 require "user.launch"
 require "user.options"
 require "user.keymaps"
@@ -14,6 +12,7 @@ spec "user.treesitter"
 spec "user.mason"
 spec "user.schemastore"
 spec "user.lspconfig"
+spec "user.copilot" --last
 spec "user.cmp"
 spec "user.telescope"
 spec "user.none-ls"
@@ -28,6 +27,7 @@ spec "user.gitsigns"
 spec "user.alpha"
 spec "user.vim-tmux-navigator"
 spec "user.graphql"
+spec "user.polar"
 spec "user.diffview"
 spec "user.netrw"
 spec "user.project"
@@ -37,12 +37,9 @@ spec "user.autopairs"
 spec "user.surround"
 spec "user.markdown-preview"
 spec "user.neotest"
--- nvim-dap
-spec "user.vscode-js-debug"
-spec "user.dap"
 spec "user.dap-ui"
-spec "user.dap-js"
 spec "user.json5"
+spec "user.dap"
 
 --extra
 spec "user.tabby"
@@ -63,11 +60,7 @@ spec "user.todo-comments"
 spec "user.noice"
 spec "user.neotab"
 spec "user.navbuddy"
-spec "user.copilot" --last
 
--- require "user.json5"
--- require "user.dap"
---
 -- require "user.extras.matchup"
 -- require "user.extras.modicator"
 -- require "user.extras.rainbow"

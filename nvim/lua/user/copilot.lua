@@ -8,6 +8,7 @@ local M = {
 }
 
 function M.config()
+  require("copilot_cmp").setup()
   require("copilot").setup {
     panel = {
       enabled = true,
@@ -62,8 +63,6 @@ function M.config()
   -- end, {
   --   silent = true,
   -- })
-
-  require("copilot_cmp").setup()
 end
 
 return M

@@ -26,6 +26,7 @@ function M.config()
     enable_autocmd = false,
   }
 
+  -- Custom commentstring
   require("Comment").setup {
     ---Add a space b/w comment and the line
     padding = true,
@@ -67,6 +68,15 @@ function M.config()
     ---Function to call after (un)comment
     -- post_hook = nil,
   }
+
+  -- Custom commentstring
+  local ft = require "Comment.ft"
+  ft
+    -- Set only line comment
+    .set("polar", "#%s")
+
+  -- 2. Metatable magic
+  ft.polar = "#%s"
 end
 
 return M
