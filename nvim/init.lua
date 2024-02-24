@@ -37,7 +37,7 @@ spec "user.autopairs"
 spec "user.surround"
 spec "user.markdown-preview"
 spec "user.neotest"
-spec "user.dap-ui"
+-- spec "user.dap-ui"
 spec "user.json5"
 spec "user.dap"
 
