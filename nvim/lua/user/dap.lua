@@ -22,89 +22,6 @@ local M = {
     },
     {
       "rcarriga/nvim-dap-ui",
-      config = function()
-        require("dapui").setup {
-          controls = {
-            element = "repl",
-            enabled = true,
-            icons = {
-              disconnect = "",
-              pause = "",
-              play = "",
-              run_last = "",
-              step_back = "",
-              step_into = "",
-              step_out = "",
-              step_over = "",
-              terminate = "",
-            },
-          },
-          element_mappings = {},
-          expand_lines = true,
-          floating = {
-            border = "single",
-            mappings = {
-              close = { "q", "<Esc>" },
-            },
-          },
-          force_buffers = true,
-          icons = {
-            collapsed = "",
-            current_frame = "",
-            expanded = "",
-          },
-          layouts = {
-            {
-              elements = {
-                {
-                  id = "scopes",
-                  size = 0.25,
-                },
-                {
-                  id = "breakpoints",
-                  size = 0.25,
-                },
-                {
-                  id = "stacks",
-                  size = 0.25,
-                },
-                {
-                  id = "watches",
-                  size = 0.25,
-                },
-              },
-              position = "left",
-              size = 40,
-            },
-            {
-              elements = {
-                {
-                  id = "repl",
-                  size = 0.5,
-                },
-                {
-                  id = "console",
-                  size = 0.5,
-                },
-              },
-              position = "bottom",
-              size = 20,
-            },
-          },
-          mappings = {
-            edit = "e",
-            expand = { "<CR>", "<2-LeftMouse>" },
-            open = "o",
-            remove = "d",
-            repl = "r",
-            toggle = "t",
-          },
-          render = {
-            indent = 1,
-            max_value_lines = 100,
-          },
-        }
-      end,
     },
     {
       "theHamsta/nvim-dap-virtual-text",
@@ -248,6 +165,37 @@ function M.config()
         console = "integratedTerminal",
         skipFiles = { "<node_internals>/**", "node_modules/**" },
       },
+      {
+        type = "pwa-node",
+        request = "launch",
+        name = "Debug Jest Tests",
+        -- trace = true, -- include debugger info
+        runtimeExecutable = "node",
+        runtimeArgs = {
+          "./node_modules/jest/bin/jest.js",
+          "--runInBand",
+        },
+        restart = true,
+        rootPath = "${workspaceFolder}",
+        cwd = "${workspaceFolder}",
+        console = "integratedTerminal",
+        internalConsoleOptions = "neverOpen",
+        skipFiles = { "<node_internals>/**", "node_modules/**" },
+        -- resolveSourceMapLocations = {}
+        resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+      },
+      {
+        type = "pwa-node",
+        request = "attach",
+        name = "Attach Pick",
+        processId = require("dap.utils").pick_process,
+        cwd = vim.fn.getcwd(),
+        restart = true,
+        sourceMaps = true,
+        protocol = "inspector",
+        console = "integratedTerminal",
+        skipFiles = { "<node_internals>/**", "node_modules/**" },
+      },
       -- Divider for the launch.json derived configs
       {
         name = "----- ↓ launch.json configs ↓ -----",
@@ -269,7 +217,87 @@ function M.config()
   end
 
   local dapui = require "dapui"
-  dapui.setup()
+  dapui.setup {
+    controls = {
+      element = "repl",
+      enabled = true,
+      icons = {
+        disconnect = "",
+        pause = "",
+        play = "",
+        run_last = "",
+        step_back = "",
+        step_into = "",
+        step_out = "",
+        step_over = "",
+        terminate = "",
+      },
+    },
+    element_mappings = {},
+    expand_lines = true,
+    floating = {
+      border = "single",
+      mappings = {
+        close = { "q", "<Esc>" },
+      },
+    },
+    force_buffers = true,
+    icons = {
+      collapsed = "",
+      current_frame = "",
+      expanded = "",
+    },
+    layouts = {
+      {
+        elements = {
+          {
+            id = "scopes",
+            size = 0.25,
+          },
+          {
+            id = "breakpoints",
+            size = 0.25,
+          },
+          {
+            id = "stacks",
+            size = 0.25,
+          },
+          {
+            id = "watches",
+            size = 0.25,
+          },
+        },
+        position = "left",
+        size = 40,
+      },
+      {
+        elements = {
+          {
+            id = "repl",
+            size = 0.5,
+          },
+          {
+            id = "console",
+            size = 0.5,
+          },
+        },
+        position = "bottom",
+        size = 35,
+      },
+    },
+    mappings = {
+      edit = "e",
+      expand = { "<CR>", "<2-LeftMouse>" },
+      open = "o",
+      remove = "d",
+      repl = "r",
+      toggle = "t",
+    },
+    render = {
+      indent = 1,
+      max_value_lines = 100,
+    },
+  }
   dap.listeners.before.attach.dapui_config = function()
     dapui.open()
   end
