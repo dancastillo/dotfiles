@@ -6,6 +6,7 @@ local M = {
     "nvim-treesitter/nvim-treesitter",
     -- Language specific
     "nvim-neotest/neotest-jest", -- https://github.com/nvim-neotest/neotest-jest
+    "nvim-neotest/nvim-nio",
   },
 }
 

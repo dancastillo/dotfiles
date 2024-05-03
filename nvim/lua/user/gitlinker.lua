@@ -11,8 +11,9 @@ local M = {
 function M.config()
   local wk = require "which-key"
   wk.register {
-    ["<leader>gy"] = { "<cmd>GitLink!<cr>", "Git link" },
-    ["<leader>gY"] = { "<cmd>GitLink blam<cr>", "Git link blame" },
+    ["<leader>gy"] = { "<cmd>GitLink! default_branch<cr>", "Git link main" },
+    ["<leader>gY"] = { "<cmd>GitLink!<cr>", "Git link" },
+    ["<leader>gb"] = { "<cmd>GitLink! blame<cr>", "Git link blame" },
   }
 
   require("gitlinker").setup {

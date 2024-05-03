@@ -20,29 +20,44 @@ local function lsp_keymaps(bufnr)
 end
 
 M.on_attach = function(client, bufnr)
-  lsp_keymaps(bufnr)
+  local keymaps_bufnr = lsp_keymaps(bufnr)
 
   if client.supports_method "textDocument/inlayHint" then
-    vim.lsp.inlay_hint.enable(bufnr, true)
+    -- vim.lsp.inlay_hint.enable(bufnr, true)
+    vim.lsp.inlay_hint.enable(true, keymaps_bufnr)
   end
-end
-
-function M.common_capabilities()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  -- capabilities.textDocument.completion.completionItem.snippetSupport = true
-  -- Attempt one
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-  -- Source: https://github.com/NomicFoundation/hardhat-vscode/issues/356#issuecomment-1387318188
-  capabilities.workspace.workspaceFolders = true
-  capabilities.workspace.didChangeConfiguration = {
-    dynamicRegistration = true,
-  }
-  return capabilities
 end
 
 M.toggle_inlay_hints = function()
   local bufnr = vim.api.nvim_get_current_buf()
-  vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr))
+  -- vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr))
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(bufnr), bufnr)
+end
+
+function M.common_capabilities()
+  local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+  if status_ok then
+    return cmp_nvim_lsp.default_capabilities()
+  end
+
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+      "documentation",
+      "detail",
+      "additionalTextEdits",
+    },
+  }
+  capabilities.workspace.workspaceFolders = false
+  capabilities.workspace.didChangeConfiguration.dynamicRegistration = true
+  capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
+  -- capabilities.textDocument.foldingRange = {
+  --   dynamicRegistration = false,
+  --   lineFoldingOnly = true,
+  -- }
+
+  return capabilities
 end
 
 function M.config()
@@ -77,11 +92,12 @@ function M.config()
     "cssls",
     "html",
     "tsserver",
-    -- "eslint",
     "pyright",
     "bashls",
     "jsonls",
     "yamlls",
+    "marksman",
+    "tailwindcss",
   }
 
   local default_diagnostic_config = {

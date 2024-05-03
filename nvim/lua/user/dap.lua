@@ -251,20 +251,20 @@ function M.config()
       {
         elements = {
           {
+            id = "watches",
+            size = 0.20,
+          },
+          {
             id = "scopes",
-            size = 0.25,
+            size = 0.30,
           },
           {
             id = "breakpoints",
-            size = 0.25,
+            size = 0.30,
           },
           {
             id = "stacks",
-            size = 0.25,
-          },
-          {
-            id = "watches",
-            size = 0.25,
+            size = 0.20,
           },
         },
         position = "left",
@@ -282,7 +282,7 @@ function M.config()
           },
         },
         position = "bottom",
-        size = 35,
+        size = 25,
       },
     },
     mappings = {
