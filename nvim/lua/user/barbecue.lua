@@ -19,6 +19,7 @@ function M.config()
     separator = " " .. require("user.icons").ui.ChevronRight .. " ",
     depth_limit = 0,
     depth_limit_indicator = "..",
+    show_modified = true,
   }
 end
 

@@ -46,6 +46,8 @@ function M.config()
           "graphql",
           "md",
           "txt",
+          "typescriptreact",
+          "javascriptreact",
         },
         only_local = "node_modules/.bin",
       },

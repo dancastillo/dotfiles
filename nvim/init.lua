@@ -64,9 +64,9 @@ spec "user.navbuddy"
 spec "user.comment-highlights"
 spec "user.blame"
 
--- require "user.extras.matchup"
+require "user.extras.matchup"
 -- require "user.extras.modicator"
 -- require "user.extras.rainbow"
--- require "user.extras.smoothie"
+require "user.extras.smoothie"
 
 require "user.lazy"
