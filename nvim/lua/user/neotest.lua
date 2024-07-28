@@ -12,18 +12,34 @@ local M = {
 
 function M.config()
   local wk = require "which-key"
-  wk.register {
-    ["<leader>tt"] = { "<cmd>lua require'neotest'.run.run()<CR>", "Test Nearest" },
-    ["<leader>tf"] = { "<cmd>lua require'neotest'.run.run(vim.fn.expand('%'))<CR>", "Test File" },
-    -- ["<leader>td"] = { "<cmd>lua require'neotest'.run.run({ strategy = 'dap' })<CR>", "Debug Test" },
-    ["<leader>td"] = { "<cmd>lua require'neotest'.run.run({vim.fn.expand('%'), strategy = 'dap'})<CR>", "Debug Test" },
-    ["<leader>ts"] = { "<cmd>lua require'neotest'.run.stop()<CR>", "Test Stop" },
-    ["<leader>ta"] = { "<cmd>lua require'neotest'.run.attach()<CR>", "Attach Test" },
-    ["<leader>tl"] = { "<cmd>lua require'neotest'.run.run_last()<CR>", "Run Last Test" },
-    ["<leader>tD"] = { "<cmd>lua require'neotest'.run.run_last({ strategy = 'dap' })<CR>", "Run Last Test" },
-    ["<leader>to"] = { "<cmd>lua require'neotest'.output.open()<CR>", "Output Window" },
-    ["<leader>tp"] = { "<cmd>lua require'neotest'.output_panel.toggle()<CR>", "Output Panel" },
-    ["<leader>ty"] = { "<cmd>lua require'neotest'.summary.toggle()<CR>", "Summary" },
+  -- wk.register {
+  --   ["<leader>tt"] = { "<cmd>lua require'neotest'.run.run()<CR>", "Test Nearest" },
+  --   ["<leader>tf"] = { "<cmd>lua require'neotest'.run.run(vim.fn.expand('%'))<CR>", "Test File" },
+  --   -- ["<leader>td"] = { "<cmd>lua require'neotest'.run.run({ strategy = 'dap' })<CR>", "Debug Test" },
+  --   ["<leader>td"] = { "<cmd>lua require'neotest'.run.run({vim.fn.expand('%'), strategy = 'dap'})<CR>", "Debug Test" },
+  --   ["<leader>ts"] = { "<cmd>lua require'neotest'.run.stop()<CR>", "Test Stop" },
+  --   ["<leader>ta"] = { "<cmd>lua require'neotest'.run.attach()<CR>", "Attach Test" },
+  --   ["<leader>tl"] = { "<cmd>lua require'neotest'.run.run_last()<CR>", "Run Last Test" },
+  --   ["<leader>tD"] = { "<cmd>lua require'neotest'.run.run_last({ strategy = 'dap' })<CR>", "Run Last Test" },
+  --   ["<leader>to"] = { "<cmd>lua require'neotest'.output.open()<CR>", "Output Window" },
+  --   ["<leader>tp"] = { "<cmd>lua require'neotest'.output_panel.toggle()<CR>", "Output Panel" },
+  --   ["<leader>ty"] = { "<cmd>lua require'neotest'.summary.toggle()<CR>", "Summary" },
+  -- }
+  wk.add {
+    { "<leader>tD", "<cmd>lua require'neotest'.run.run_last({ strategy = 'dap' })<CR>", desc = "Run Last Test" },
+    { "<leader>ta", "<cmd>lua require'neotest'.run.attach()<CR>", desc = "Attach Test" },
+    {
+      "<leader>td",
+      "<cmd>lua require'neotest'.run.run({vim.fn.expand('%'), strategy = 'dap'})<CR>",
+      desc = "Debug Test",
+    },
+    { "<leader>tf", "<cmd>lua require'neotest'.run.run(vim.fn.expand('%'))<CR>", desc = "Test File" },
+    { "<leader>tl", "<cmd>lua require'neotest'.run.run_last()<CR>", desc = "Run Last Test" },
+    { "<leader>to", "<cmd>lua require'neotest'.output.open()<CR>", desc = "Output Window" },
+    { "<leader>tp", "<cmd>lua require'neotest'.output_panel.toggle()<CR>", desc = "Output Panel" },
+    { "<leader>ts", "<cmd>lua require'neotest'.run.stop()<CR>", desc = "Test Stop" },
+    { "<leader>tt", "<cmd>lua require'neotest'.run.run()<CR>", desc = "Test Nearest" },
+    { "<leader>ty", "<cmd>lua require'neotest'.summary.toggle()<CR>", desc = "Summary" },
   }
 
   require("neotest").setup {

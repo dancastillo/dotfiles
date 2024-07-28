@@ -30,6 +30,7 @@ function M.config()
   -- }
   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
+  vim.lsp.buf.format { timeout_ms = 5000 }
   null_ls.setup {
     sources = {
       -- standardjs,
@@ -57,12 +58,12 @@ function M.config()
         },
         args = { "--indent-width", "2", "--indent-type", "Spaces", "-" },
       },
-      null_ls.builtins.diagnostics.stylelint.with {
-        filetypes = {
-          "css",
-          "scss",
-        },
-      },
+      -- null_ls.builtins.diagnostics.stylelint.with {
+      --   filetypes = {
+      --     "css",
+      --     "scss",
+      --   },
+      -- },
       formatting.stylua,
       formatting.prettier,
       -- formatting.prettier.with {

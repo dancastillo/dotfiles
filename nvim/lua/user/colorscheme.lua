@@ -3,36 +3,10 @@ local M = {
   lazy = false, -- make sure we load this during startup if it is your main colorscheme
   priority = 1000, -- make sure to load this before all the other start plugins
 }
--- --- This module will load a random colorscheme on nvim startup process.
---
--- local M = {
---   "sainnhe/gruvbox-material",
---   lazy = false, -- make sure we load this during startup if it is your main colorscheme
---   priority = 1000, -- make sure to load this before all the other start plugins
--- }
---
--- -- Colorscheme to its directory name mapping, because colorscheme repo name is not necessarily
--- -- the same as the colorscheme name itself.
--- function M.config()
---   -- foreground option can be material, mix, or original
---   vim.g.gruvbox_material_foreground = "original"
---   --background option can be hard, medium, soft
---   vim.g.gruvbox_material_background = "hard"
---   vim.g.gruvbox_material_enable_italic = 1
---   vim.g.gruvbox_material_better_performance = 1
---
---   vim.cmd [[colorscheme gruvbox-material]]
---   -- vim.o.background = "dark" -- or "light" for light mode
--- end
 
 function M.config()
-  -- Example config in Lua
-  -- vim.g.gruvbox_baby_function_style = "NONE"
   vim.g.gruvbox_baby_keyword_style = "italic"
 
-  -- Each highlight group must follow the structure:
-  -- ColorGroup = {fg = "foreground color", bg = "background_color", style = "some_style(:h attr-list)"}
-  -- See also :h highlight-guifg
   -- Example:
   -- vim.g.gruvbox_baby_highlights = { Normal = { fg = "#123123", bg = "NONE", style = "underline" } }
 
@@ -44,7 +18,58 @@ function M.config()
 
   -- Load the colorscheme
   vim.cmd [[colorscheme gruvbox-baby]]
-  -- vim.o.background = "dark" -- or "light" for light mode
 end
 
 return M
+
+-- local M = {
+--   "navarasu/onedark.nvim",
+--   lazy = false, -- make sure we load this during startup if it is your main colorscheme
+--   priority = 1000, -- make sure to load this before all the other start plugins
+-- }
+--
+-- function M.config()
+--   require("onedark").setup {
+--     -- Main options --
+--     style = "warmer", -- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+--     transparent = false, -- Show/hide background
+--     term_colors = true, -- Change terminal color as per the selected theme style
+--     ending_tildes = false, -- Show the end-of-buffer tildes. By default they are hidden
+--     cmp_itemkind_reverse = false, -- reverse item kind highlights in cmp menu
+--
+--     -- toggle theme style ---
+--     -- toggle_style_key = nil, -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
+--     -- toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
+--
+--     -- Change code style ---
+--     -- Options are italic, bold, underline, none
+--     -- You can configure multiple style with comma separated, For e.g., keywords = 'italic,bold'
+--     code_style = {
+--       comments = "italic",
+--       keywords = "none",
+--       functions = "none",
+--       strings = "none",
+--       variables = "none",
+--     },
+--
+--     -- Lualine options --
+--     lualine = {
+--       transparent = false, -- lualine center bar transparency
+--     },
+--
+--     -- Custom Highlights --
+--     colors = {}, -- Override default colors
+--     highlights = {}, -- Override highlight groups
+--
+--     -- Plugins Config --
+--     diagnostics = {
+--       darker = true, -- darker colors for diagnostic
+--       undercurl = true, -- use undercurl instead of underline for diagnostics
+--       background = true, -- use background color for virtual text
+--     },
+--   }
+--
+--   vim.cmd [[colorscheme onedark]]
+-- end
+--
+-- return M
