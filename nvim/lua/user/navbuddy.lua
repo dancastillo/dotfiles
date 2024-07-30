@@ -8,9 +8,6 @@ local M = {
 
 function M.config()
   local wk = require "which-key"
-  -- wk.register {
-  --   ["<leader>o"] = { "<cmd>Navbuddy<cr>", "Nav" },
-  -- }
   wk.add {
     { "<leader>o", "<cmd>Navbuddy<cr>", desc = "Nav" },
   }

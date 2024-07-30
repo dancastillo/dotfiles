@@ -30,7 +30,7 @@ function M.config()
   -- }
   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
-  vim.lsp.buf.format { timeout_ms = 5000 }
+  vim.lsp.buf.format { timeout_ms = 10000 }
   null_ls.setup {
     sources = {
       -- standardjs,
@@ -74,18 +74,6 @@ function M.config()
       -- null_ls.builtins.diagnostics.standardjs,
       null_ls.builtins.completion.spell,
     },
-    -- on_attach = function(client, bufnr)
-    --   if client.supports_method "textDocument/formatting" then
-    --     vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
-    --     vim.api.nvim_create_autocmd("BufWritePre", {
-    --       group = augroup,
-    --       buffer = bufnr,
-    --       callback = function()
-    --         vim.lsp.buf.format { async = false }
-    --       end,
-    --     })
-    --   end
-    -- end,
     on_attach = function(client, bufnr)
       if client.supports_method "textDocument/formatting" then
         vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
@@ -93,16 +81,29 @@ function M.config()
           group = augroup,
           buffer = bufnr,
           callback = function()
-            vim.lsp.buf.format {
-              bufnr = bufnr,
-              filter = function(_client)
-                return _client.name == "null-ls"
-              end,
-            }
+            vim.lsp.buf.format { async = false }
           end,
         })
       end
     end,
+    -- TEST old on_attach above
+    -- on_attach = function(client, bufnr)
+    --   if client.supports_method "textDocument/formatting" then
+    --     vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+    --     vim.api.nvim_create_autocmd("BufWritePre", {
+    --       group = augroup,
+    --       buffer = bufnr,
+    --       callback = function()
+    --         vim.lsp.buf.format {
+    --           bufnr = bufnr,
+    --           filter = function(_client)
+    --             return _client.name == "null-ls"
+    --           end,
+    --         }
+    --       end,
+    --     })
+    --   end
+    -- end,
   }
 end
 
