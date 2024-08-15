@@ -43,7 +43,7 @@ function M.config()
           "html",
           "json",
           "yaml",
-          "markdown",
+          -- "markdown",
           "graphql",
           "md",
           "txt",
@@ -66,10 +66,16 @@ function M.config()
       -- },
       formatting.stylua,
       formatting.prettier,
-      -- formatting.prettier.with {
-      --   extra_filetypes = { "toml" },
-      --   -- extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
-      -- },
+      formatting.prettier.with {
+        filetypes = { "javascript" },
+        extra_filetypes = { "toml" },
+        extra_args = {
+          "--no-semi",
+          "--single-quote",
+          "--jsx-single-quote",
+          "--trailing-comma=none",
+        },
+      },
       -- null_ls.builtins.diagnostics.eslint,
       -- null_ls.builtins.diagnostics.standardjs,
       null_ls.builtins.completion.spell,
@@ -81,29 +87,16 @@ function M.config()
           group = augroup,
           buffer = bufnr,
           callback = function()
-            vim.lsp.buf.format { async = false }
+            vim.lsp.buf.format {
+              bufnr = bufnr,
+              filter = function(_client)
+                return _client.name == "null-ls"
+              end,
+            }
           end,
         })
       end
     end,
-    -- TEST old on_attach above
-    -- on_attach = function(client, bufnr)
-    --   if client.supports_method "textDocument/formatting" then
-    --     vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
-    --     vim.api.nvim_create_autocmd("BufWritePre", {
-    --       group = augroup,
-    --       buffer = bufnr,
-    --       callback = function()
-    --         vim.lsp.buf.format {
-    --           bufnr = bufnr,
-    --           filter = function(_client)
-    --             return _client.name == "null-ls"
-    --           end,
-    --         }
-    --       end,
-    --     })
-    --   end
-    -- end,
   }
 end
 

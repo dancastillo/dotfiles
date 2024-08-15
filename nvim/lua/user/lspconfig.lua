@@ -133,10 +133,13 @@ function M.config()
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
   require("lspconfig.ui.windows").default_options.border = "rounded"
 
+  local util = require "lspconfig.util"
+
   for _, server in pairs(servers) do
     local opts = {
       on_attach = M.on_attach,
       capabilities = M.common_capabilities(),
+      root_dir = util.root_pattern ".git"(fname),
     }
 
     local require_ok, settings = pcall(require, "user.lspsettings." .. server)
