@@ -103,11 +103,11 @@ function M.config()
 
   local dap = require "dap"
 
-  -- dap.adapters.node2 = {
-  --   type = "executable",
-  --   command = "node",
-  --   args = { vim.fn.stdpath "data" .. "/mason/packages/node-debug2-adapter/out/src/nodeDebug.js" },
-  -- }
+  dap.adapters.node2 = {
+    type = "executable",
+    command = "node",
+    args = { vim.fn.stdpath "data" .. "/mason/packages/node-debug2-adapter/out/src/nodeDebug.js" },
+  }
 
   dap.adapters.node = {
     type = "executable",
@@ -143,6 +143,24 @@ function M.config()
       --   userDataDir = false,
       -- },
       {
+        name = "__Debugger - CoreAPI",
+        type = "node",
+        request = "attach",
+        address = "localhost",
+        port = 9229,
+        restart = true,
+        localRoot = "${workspaceFolder}",
+        remoteRoot = "/usr/app",
+        sourceMaps = true,
+        program = "${file}",
+        cwd = vim.fn.getcwd(),
+        protocol = "inspector",
+        console = "integratedTerminal",
+        skipFiles = { "<node_internals>/**", "node_modules/**", "dist/**" },
+        outFiles = { "${workspaceFolder}/dist/**/*.js" },
+        resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+      },
+      {
         type = "node",
         name = "Launch",
         request = "launch",
@@ -154,9 +172,10 @@ function M.config()
         console = "integratedTerminal",
         skipFiles = { "<node_internals>/**", "node_modules/**" },
       },
+      -- THIS WORKS
       {
-        type = "node",
         name = "Attach",
+        type = "node",
         request = "attach",
         cwd = vim.fn.getcwd(),
         restart = true,
@@ -268,7 +287,7 @@ function M.config()
           },
         },
         position = "left",
-        size = 40,
+        size = 50,
       },
       {
         elements = {
@@ -298,18 +317,20 @@ function M.config()
       max_value_lines = 100,
     },
   }
+  -- Open Dap UI when attaching or launching a session
   dap.listeners.before.attach.dapui_config = function()
     dapui.open()
   end
   dap.listeners.before.launch.dapui_config = function()
     dapui.open()
   end
-  dap.listeners.before.event_terminated.dapui_config = function()
-    dapui.close()
-  end
-  dap.listeners.before.event_exited.dapui_config = function()
-    dapui.close()
-  end
+  -- Close Dap UI when the session is terminated or exited
+  -- dap.listeners.before.event_terminated.dapui_config = function()
+  --   dapui.close()
+  -- end
+  -- dap.listeners.before.event_exited.dapui_config = function()
+  --   dapui.close()
+  -- end
 end
 
 return M

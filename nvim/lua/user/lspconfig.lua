@@ -90,13 +90,14 @@ function M.config()
     "lua_ls",
     "cssls",
     "html",
-    "tsserver",
+    "ts_ls",
     "pyright",
     "bashls",
     "jsonls",
     "yamlls",
     "marksman",
     "tailwindcss",
+    "denols",
   }
 
   local default_diagnostic_config = {
@@ -141,6 +142,61 @@ function M.config()
       capabilities = M.common_capabilities(),
       root_dir = util.root_pattern ".git"(fname),
     }
+
+    if server == "ts_ls" then
+      opts = {
+        on_attach = M.on_attach,
+        capabilities = M.common_capabilities(),
+        -- root_dir = util.root_pattern("package.json", ".git", "tsconfig.json"),
+        single_file_support = false,
+        root_dir = function(filename, bufnr)
+          local denoRootDir = lspconfig.util.root_pattern("deno.json", "deno.json")(filename)
+          if denoRootDir then
+            -- print('this seems to be a deno project; returning nil so that tsserver does not attach');
+            return nil
+            -- else
+            -- print('this seems to be a ts project; return root dir based on package.json')
+          end
+
+          return lspconfig.util.root_pattern ".git"(filename)
+        end,
+      }
+    end
+
+    if server == "denols" then
+      opts = {
+        on_attach = M.on_attach,
+        root_dir = util.root_pattern("deno.json", "deno.jsonc"),
+      }
+    end
+
+    -- if servers == "tsserver" then
+    --   opts.settings = {
+    --     javascript = {
+    --       inlayHints = {
+    --         includeInlayEnumMemberValueHints = true,
+    --         includeInlayFunctionLikeReturnTypeHints = true,
+    --         includeInlayFunctionParameterTypeHints = true,
+    --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+    --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+    --         includeInlayPropertyDeclarationTypeHints = true,
+    --         includeInlayVariableTypeHints = false,
+    --       },
+    --     },
+    --
+    --     typescript = {
+    --       inlayHints = {
+    --         includeInlayEnumMemberValueHints = true,
+    --         includeInlayFunctionLikeReturnTypeHints = true,
+    --         includeInlayFunctionParameterTypeHints = true,
+    --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+    --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+    --         includeInlayPropertyDeclarationTypeHints = true,
+    --         includeInlayVariableTypeHints = false,
+    --       },
+    --     },
+    --   }
+    -- end
 
     local require_ok, settings = pcall(require, "user.lspsettings." .. server)
     if require_ok then

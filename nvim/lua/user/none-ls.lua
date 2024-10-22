@@ -50,6 +50,12 @@ function M.config()
           "typescriptreact",
           "javascriptreact",
         },
+        -- extra_args = {
+        --   "--no-semi",
+        --   "--single-quote",
+        --   "--jsx-single-quote",
+        --   "--trailing-comma=none",
+        -- },
         only_local = "node_modules/.bin",
       },
       null_ls.builtins.formatting.stylua.with {
@@ -65,17 +71,17 @@ function M.config()
       --   },
       -- },
       formatting.stylua,
-      formatting.prettier,
-      formatting.prettier.with {
-        filetypes = { "javascript" },
-        extra_filetypes = { "toml" },
-        extra_args = {
-          "--no-semi",
-          "--single-quote",
-          "--jsx-single-quote",
-          "--trailing-comma=none",
-        },
-      },
+      -- formatting.prettier,
+      -- formatting.prettier.with {
+      --   filetypes = { "javascript" },
+      --   extra_filetypes = { "toml" },
+      --   extra_args = {
+      --     "--no-semi",
+      --     "--single-quote",
+      --     "--jsx-single-quote",
+      --     "--trailing-comma=none",
+      --   },
+      -- },
       -- null_ls.builtins.diagnostics.eslint,
       -- null_ls.builtins.diagnostics.standardjs,
       null_ls.builtins.completion.spell,

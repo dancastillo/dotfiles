@@ -22,6 +22,7 @@ function M.config()
       PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
       NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
       TEST = { icon = "󰙨 ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+      IMPORTANT = { icon = " ", color = "important", alt = { "CRITICAL" } },
     },
     gui_style = {
       fg = "NONE", -- The gui style to use for the fg highlight group.
@@ -53,6 +54,7 @@ function M.config()
       hint = { "DiagnosticVirtualTextHint", "#10B981" },
       default = { "Identifier", "#7C3AED" },
       test = { "Identifier", "#FF00FF" },
+      important = { "Identifier", "#FF0000" },
     },
     search = {
       command = "rg",
