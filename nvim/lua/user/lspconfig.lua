@@ -24,14 +24,16 @@ M.on_attach = function(client, bufnr)
 
   if client.supports_method "textDocument/inlayHint" then
     -- vim.lsp.inlay_hint.enable(bufnr, true)
-    vim.lsp.inlay_hint.enable(true, keymaps_bufnr)
+    -- vim.lsp.inlay_hint.enable(true, keymaps_bufnr)
+    vim.lsp.inlay_hint.enable(true)
   end
 end
 
 M.toggle_inlay_hints = function()
-  local bufnr = vim.api.nvim_get_current_buf()
+  -- local bufnr = vim.api.nvim_get_current_buf()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
   -- vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr))
-  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(bufnr), bufnr)
+  -- vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(bufnr), bufnr)
 end
 
 function M.common_capabilities()
@@ -140,63 +142,76 @@ function M.config()
     local opts = {
       on_attach = M.on_attach,
       capabilities = M.common_capabilities(),
-      root_dir = util.root_pattern ".git"(fname),
+      root_dir = function(filename)
+        return util.root_pattern ".git"(filename)
+      end,
     }
 
+    -- https://github.com/typescript-language-server/typescript-language-server
     if server == "ts_ls" then
       opts = {
         on_attach = M.on_attach,
         capabilities = M.common_capabilities(),
-        -- root_dir = util.root_pattern("package.json", ".git", "tsconfig.json"),
         single_file_support = false,
         root_dir = function(filename, bufnr)
-          local denoRootDir = lspconfig.util.root_pattern("deno.json", "deno.json")(filename)
+          local denoRootDir = lspconfig.util.root_pattern("deno.json", "deno.jsonc")(filename)
           if denoRootDir then
-            -- print('this seems to be a deno project; returning nil so that tsserver does not attach');
+            -- print "this seems to be a deno project; returning nil so that tsserver does not attach"
             return nil
             -- else
-            -- print('this seems to be a ts project; return root dir based on package.json')
+            --   print "this seems to be a ts project; return root dir based on package.json"
+          end
+
+          return lspconfig.util.root_pattern ".git"(filename)
+        end,
+      }
+
+      local denoRootDir2 = lspconfig.util.root_pattern("deno.json", "deno.jsonc")
+      if server == "ts_ls" and denoRootDir2 then
+        opts.settings = {
+          javascript = {
+            inlayHints = {
+              includeInlayEnumMemberValueHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayVariableTypeHints = false,
+            },
+          },
+
+          typescript = {
+            inlayHints = {
+              includeInlayEnumMemberValueHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayVariableTypeHints = false,
+            },
+          },
+        }
+      end
+    end
+
+    -- https://github.com/denoland/deno
+    if server == "denols" then
+      opts = {
+        on_attach = M.on_attach,
+        capabilities = M.common_capabilities(),
+        single_file_support = false,
+        root_dir = function(filename, bufnr)
+          local typescriptRootDir = lspconfig.util.root_pattern("node_modules", "package.json")(filename)
+          if typescriptRootDir then
+            return nil
           end
 
           return lspconfig.util.root_pattern ".git"(filename)
         end,
       }
     end
-
-    if server == "denols" then
-      opts = {
-        on_attach = M.on_attach,
-        root_dir = util.root_pattern("deno.json", "deno.jsonc"),
-      }
-    end
-
-    -- if servers == "tsserver" then
-    --   opts.settings = {
-    --     javascript = {
-    --       inlayHints = {
-    --         includeInlayEnumMemberValueHints = true,
-    --         includeInlayFunctionLikeReturnTypeHints = true,
-    --         includeInlayFunctionParameterTypeHints = true,
-    --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-    --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-    --         includeInlayPropertyDeclarationTypeHints = true,
-    --         includeInlayVariableTypeHints = false,
-    --       },
-    --     },
-    --
-    --     typescript = {
-    --       inlayHints = {
-    --         includeInlayEnumMemberValueHints = true,
-    --         includeInlayFunctionLikeReturnTypeHints = true,
-    --         includeInlayFunctionParameterTypeHints = true,
-    --         includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-    --         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-    --         includeInlayPropertyDeclarationTypeHints = true,
-    --         includeInlayVariableTypeHints = false,
-    --       },
-    --     },
-    --   }
-    -- end
 
     local require_ok, settings = pcall(require, "user.lspsettings." .. server)
     if require_ok then

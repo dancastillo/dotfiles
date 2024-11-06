@@ -57,11 +57,11 @@ function M.config()
   local copilot_suggestion = require "copilot.suggestion"
 
   cmp.setup {
-    snippet = {
-      expand = function(args)
-        luasnip.lsp_expand(args.body) -- For `luasnip` users.
-      end,
-    },
+    -- snippet = {
+    --   expand = function(args)
+    --     luasnip.lsp_expand(args.body) -- For `luasnip` users.
+    --   end,
+    -- },
     mapping = cmp.mapping.preset.insert {
       ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
       ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),

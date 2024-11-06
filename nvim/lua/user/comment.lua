@@ -12,7 +12,7 @@ local M = {
 
 function M.config()
   local wk = require "which-key"
- wk.add {
+  wk.add {
     {
       "<leader>/",
       "<Plug>(comment_toggle_linewise_current)",

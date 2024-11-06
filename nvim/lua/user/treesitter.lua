@@ -28,7 +28,7 @@ local M = {
 }
 function M.config()
   require("nvim-treesitter.configs").setup {
-    ensure_installed = { "javascript", "typescript", "lua", "markdown", "markdown_inline", "bash", "vim" }, -- put the language you want in this array
+    ensure_installed = { "javascript", "typescript", "lua", "markdown", "markdown_inline", "bash", "vim", "html" }, -- put the language you want in this array
     ignore_install = { "" },
     sync_install = false,
     auto_install = false,
@@ -87,7 +87,7 @@ function M.config()
       },
     },
 
-    modules = {}
+    modules = {},
   }
 
   -- local configs = require "nvim-treesitter.configs"
@@ -118,4 +118,3 @@ function M.config()
 end
 
 return M
-
