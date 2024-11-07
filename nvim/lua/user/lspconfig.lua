@@ -207,23 +207,25 @@ function M.config()
         capabilities = M.common_capabilities(),
         single_file_support = false,
         root_dir = function(filename, bufnr)
-          local typescriptRootDir = lspconfig.util.root_pattern("node_modules", "package.json")(filename)
+          local typescriptRootDir = lspconfig.util.root_pattern "package.json"(filename)
           if typescriptRootDir then
             print "denols - this is TS project; returning nil so that deno does not attach"
             return nil
           else
             print "denols - this is DENO project; return root dir based on deno.json"
           end
-          local gitRoot = lspconfig.util.root_pattern ".git"(filename)
-          print("gitRoot", gitRoot)
-          if gitRoot then
-            return gitRoot
-          end
-          local denoJson = lspconfig.util.root_pattern("deno.json", "deno.jsonc")(filename)
-          print("denoJson", denoJson)
-          if denoJson then
-            return denoJson
-          end
+
+          -- local gitRoot = lspconfig.util.root_pattern ".git"(filename)
+          -- print("gitRoot", gitRoot)
+          -- if gitRoot then
+          --   return gitRoot
+          -- end
+          -- local denoJson = lspconfig.util.root_pattern("deno.json", "deno.jsonc")(filename)
+          -- print("denoJson", denoJson)
+          -- if denoJson then
+          --   return denoJson
+          -- end
+          return lspconfig.util.root_pattern ".git"(filename)
         end,
       }
     end

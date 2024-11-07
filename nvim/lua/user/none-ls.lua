@@ -140,8 +140,8 @@ local sources = {
     return denoRootDir ~= nil
   end
 
-  print(is_deno_project(vim.api.nvim_buf_get_name(0)))
-  print(is_deno_project(vim.api.nvim_buf_get_name(0)) and deno_fmt or nil)
+  -- print(is_deno_project(vim.api.nvim_buf_get_name(0)))
+  -- print(is_deno_project(vim.api.nvim_buf_get_name(0)) and deno_fmt or nil)
   vim.lsp.buf.format { timeout_ms = 10000 }
   null_ls.setup {
     sources = {
