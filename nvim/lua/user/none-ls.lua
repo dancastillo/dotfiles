@@ -133,11 +133,18 @@ local sources = {
 
   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
+  -- Check if the project is a deno project
+  local lspconfig = require "lspconfig"
+  local function is_deno_project(filename)
+    local denoRootDir = lspconfig.util.root_pattern("deno.json", "deno.jsonc")(filename)
+    return denoRootDir ~= nil
+  end
+
+  print(is_deno_project(vim.api.nvim_buf_get_name(0)))
+  print(is_deno_project(vim.api.nvim_buf_get_name(0)) and deno_fmt or nil)
   vim.lsp.buf.format { timeout_ms = 10000 }
   null_ls.setup {
     sources = {
-      deno_fmt,
-      deno_lint,
       standardjs,
       formatting.prettier.with {
         filetypes = {
@@ -190,6 +197,8 @@ local sources = {
       -- null_ls.builtins.diagnostics.eslint,
       -- null_ls.builtins.diagnostics.standardjs,
       null_ls.builtins.completion.spell,
+      is_deno_project(vim.api.nvim_buf_get_name(0)) and deno_fmt or nil,
+      is_deno_project(vim.api.nvim_buf_get_name(0)) and deno_lint or nil,
     },
     on_attach = function(client, bufnr)
       if client.supports_method "textDocument/formatting" then

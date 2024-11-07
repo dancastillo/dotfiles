@@ -62,6 +62,11 @@ function M.common_capabilities()
   return capabilities
 end
 
+local function is_deno_project(filename)
+  local denoRootDir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc")(filename)
+  return denoRootDir ~= nil
+end
+
 function M.config()
   local wk = require "which-key"
   wk.add {
@@ -156,18 +161,17 @@ function M.config()
         root_dir = function(filename, bufnr)
           local denoRootDir = lspconfig.util.root_pattern("deno.json", "deno.jsonc")(filename)
           if denoRootDir then
-            -- print "this seems to be a deno project; returning nil so that tsserver does not attach"
+            print "TS_LS - this is a DENO project; returning nil so that tsserver does not attach"
             return nil
-            -- else
-            --   print "this seems to be a ts project; return root dir based on package.json"
+          else
+            print "TS_LS - this is a TS project; return root dir based on package.json"
           end
 
           return lspconfig.util.root_pattern ".git"(filename)
         end,
       }
 
-      local denoRootDir2 = lspconfig.util.root_pattern("deno.json", "deno.jsonc")
-      if server == "ts_ls" and denoRootDir2 then
+      if server == "ts_ls" and is_deno_project(vim.api.nvim_buf_get_name(0)) then
         opts.settings = {
           javascript = {
             inlayHints = {
@@ -205,10 +209,21 @@ function M.config()
         root_dir = function(filename, bufnr)
           local typescriptRootDir = lspconfig.util.root_pattern("node_modules", "package.json")(filename)
           if typescriptRootDir then
+            print "denols - this is TS project; returning nil so that deno does not attach"
             return nil
+          else
+            print "denols - this is DENO project; return root dir based on deno.json"
           end
-
-          return lspconfig.util.root_pattern ".git"(filename)
+          local gitRoot = lspconfig.util.root_pattern ".git"(filename)
+          print("gitRoot", gitRoot)
+          if gitRoot then
+            return gitRoot
+          end
+          local denoJson = lspconfig.util.root_pattern("deno.json", "deno.jsonc")(filename)
+          print("denoJson", denoJson)
+          if denoJson then
+            return denoJson
+          end
         end,
       }
     end
