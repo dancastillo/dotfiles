@@ -6,6 +6,7 @@ require "user.options"
 require "user.keymaps"
 require "user.autocmds"
 
+spec "user.whichkey"
 spec "user.mason"
 spec "user.lspconfig"
 spec "user.colorscheme"
@@ -17,7 +18,6 @@ spec "user.copilot"
 spec "user.cmp"
 spec "user.telescope"
 spec "user.none-ls"
-spec "user.whichkey"
 -- Explorer
 spec "user.nvimtree"
 spec "user.comment"
@@ -42,6 +42,7 @@ spec "user.markdown-preview"
 spec "user.neotest"
 spec "user.json5"
 spec "user.dap"
+spec "user.nvim-ts-autotag"
 
 --extra
 spec "user.tabby"

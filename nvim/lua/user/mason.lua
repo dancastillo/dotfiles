@@ -18,6 +18,7 @@ function M.config()
     "yamlls",
     "marksman",
     "tailwindcss",
+    "typescript-language-server"
   }
   require("mason").setup {
     ui = {
