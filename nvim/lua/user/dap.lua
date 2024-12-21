@@ -9,17 +9,17 @@ local M = {
   "mfussenegger/nvim-dap",
   event = "VeryLazy",
   dependencies = {
-    {
-      "jay-babu/mason-nvim-dap.nvim",
-      config = function()
-        require("mason-nvim-dap").setup {
-          ensure_installed = {
-            "js",
-            "node2",
-          },
-        }
-      end,
-    },
+    -- {
+    "jay-babu/mason-nvim-dap.nvim",
+    -- config = function()
+    --   require("mason-nvim-dap").setup {
+    --     ensure_installed = {
+    --       "js",
+    --       "node2",
+    --     },
+    --   }
+    -- end,
+    -- },
     {
       "rcarriga/nvim-dap-ui",
     },
@@ -30,24 +30,23 @@ local M = {
       "nvim-telescope/telescope-dap.nvim",
     },
     { "stevearc/overseer.nvim" },
-    -- Install the vscode-js-debug adapter
-    {
-      "microsoft/vscode-js-debug",
-      -- After install, build it and rename the dist directory to out
-      -- build = "npm install --legacy-peer-deps --no-save && npx gulp vsDebugServerBundle && rm -rf out && mv dist out",
-      build = "npm install --legacy-peer-deps  && npx gulp vsDebugServerBundle &&  mv dist out",
-      version = "1.*",
-    },
     {
       "mxsdev/nvim-dap-vscode-js",
+      dependencies = {
+        "microsoft/vscode-js-debug",
+        version = '1.x',
+        build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+      },
       config = function()
+        local dap = require "dap"
+        local dap_js = require "dap-vscode-js"
+
         ---@diagnostic disable-next-line: missing-fields
-        require("dap-vscode-js").setup {
+        dap_js.setup {
           -- Path of node executable. Defaults to $NODE_PATH, and then "node"
           node_path = "node",
 
           -- Path to vscode-js-debug installation.
-          -- debugger_path = vim.fn.resolve(vim.fn.stdpath "data" .. "/lazy/vscode-js-debug"),
           debugger_path = vim.fn.stdpath "data" .. "/lazy/vscode-js-debug",
 
           -- Command to use to launch the debug server. Takes precedence over "node_path" and "debugger_path"
@@ -65,10 +64,10 @@ local M = {
           },
 
           -- Path for file logging
-          -- log_file_path = "(stdpath cache)/dap_vscode_js.log",
+          -- log_file_path = vim.fn.stdpath "cache" .. "/dap_vscode_js.log",
 
           -- Logging level for output to file. Set to false to disable logging.
-          -- log_file_level = false,
+          -- log_file_level = 1,
 
           -- Logging level for output to console. Set to false to disable console output.
           -- log_console_level = vim.log.levels.ERROR,
@@ -83,6 +82,7 @@ local M = {
 }
 
 function M.config()
+  print(vim.fn.stdpath)
   local wk = require "which-key"
   wk.add {
     { "<leader>dC", "<cmd>lua require'dap'.run_to_cursor()<cr>", desc = "Run To Cursor" },
@@ -102,87 +102,44 @@ function M.config()
   }
 
   local dap = require "dap"
+  dap.set_log_level "TRACE"
 
   dap.adapters.node2 = {
     type = "executable",
-    command = "node",
-    args = { vim.fn.stdpath "data" .. "/mason/packages/node-debug2-adapter/out/src/nodeDebug.js" },
+    -- command = "node",
+    args = { vim.fn.stdpath "data" .. "/lazy/vscode-js-debug/out/src/vsDebugServer.js" },
+    -- args = { vim.fn.stdpath "data" .. "/mason/packages/js-debug-adapter/js-debug-adapter" },
   }
 
   dap.adapters.node = {
     type = "executable",
     command = "node",
-    args = { vim.fn.stdpath "data" .. "/mason/packages/node-debug2-adapter/out/src/nodeDebug.js" },
+    args = { vim.fn.stdpath "data" .. "/lazy/vscode-js-debug/out/src/vsDebugServer.js" },
+    -- args = { vim.fn.stdpath "data" .. "/mason/packages/js-debug-adapter/js-debug-adapter" },
   }
 
   for _, language in ipairs(js_based_languages) do
     dap.configurations[language] = {
-      -- -- Debug web applications (client side)
-      -- {
-      --   type = "pwa-chrome",
-      --   request = "launch",
-      --   name = "Launch & Debug Chrome",
-      --   url = function()
-      --     local co = coroutine.running()
-      --     return coroutine.create(function()
-      --       vim.ui.input({
-      --         prompt = "Enter URL: ",
-      --         default = "http://localhost:3000",
-      --       }, function(url)
-      --         if url == nil or url == "" then
-      --           return
-      --         else
-      --           coroutine.resume(co, url)
-      --         end
-      --       end)
-      --     end)
-      --   end,
-      --   webRoot = vim.fn.getcwd(),
-      --   protocol = "inspector",
-      --   sourceMaps = true,
-      --   userDataDir = false,
-      -- },
       {
-        name = "__Debugger - CoreAPI",
-        type = "node",
-        request = "attach",
-        address = "localhost",
-        port = 9229,
-        restart = true,
-        localRoot = "${workspaceFolder}",
-        remoteRoot = "/usr/app",
-        sourceMaps = true,
-        program = "${file}",
-        cwd = vim.fn.getcwd(),
-        protocol = "inspector",
-        console = "integratedTerminal",
-        skipFiles = { "<node_internals>/**", "node_modules/**", "dist/**" },
-        outFiles = { "${workspaceFolder}/dist/**/*.js" },
-        resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
-      },
-      {
-        type = "node",
-        name = "Launch",
-        request = "launch",
-        program = "${file}",
-        cwd = vim.fn.getcwd(),
-        restart = true,
-        sourceMaps = true,
-        protocol = "inspector",
-        console = "integratedTerminal",
-        skipFiles = { "<node_internals>/**", "node_modules/**" },
-      },
-      -- THIS WORKS
-      {
-        name = "Attach",
-        type = "node",
+        name = "Attach to existing `node --inspect` process",
+        type = "pwa-node",
         request = "attach",
         cwd = vim.fn.getcwd(),
         restart = true,
         sourceMaps = true,
         protocol = "inspector",
         console = "integratedTerminal",
-        skipFiles = { "<node_internals>/**", "node_modules/**" },
+        skipFiles = {
+          '${workspaceFolder}/node_modules/**/*.js',
+          '${workspaceFolder}/packages/**/node_modules/**/*.js',
+          '${workspaceFolder}/packages/**/**/node_modules/**/*.js',
+          '<node_internals>/**',
+          'node_modules/**',
+        },
+        resolveSourceMapLocations = {
+          '${workspaceFolder}/**',
+          '!**/node_modules/**',
+        },
       },
       {
         type = "pwa-node",
@@ -202,18 +159,6 @@ function M.config()
         skipFiles = { "<node_internals>/**", "node_modules/**" },
         -- resolveSourceMapLocations = {}
         resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
-      },
-      {
-        type = "pwa-node",
-        request = "attach",
-        name = "Attach Pick",
-        processId = require("dap.utils").pick_process,
-        cwd = vim.fn.getcwd(),
-        restart = true,
-        sourceMaps = true,
-        protocol = "inspector",
-        console = "integratedTerminal",
-        skipFiles = { "<node_internals>/**", "node_modules/**" },
       },
       -- Divider for the launch.json derived configs
       {
@@ -325,12 +270,12 @@ function M.config()
     dapui.open()
   end
   -- Close Dap UI when the session is terminated or exited
-  -- dap.listeners.before.event_terminated.dapui_config = function()
-  --   dapui.close()
-  -- end
-  -- dap.listeners.before.event_exited.dapui_config = function()
-  --   dapui.close()
-  -- end
+  dap.listeners.before.event_terminated.dapui_config = function()
+    dapui.close()
+  end
+  dap.listeners.before.event_exited.dapui_config = function()
+    dapui.close()
+  end
 end
 
 return M
