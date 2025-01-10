@@ -20,7 +20,7 @@ function M.config()
       url = "https://standardjs.com/",
       description = "JavaScript Standard Style, a no-configuration automatic code formatter that just works.",
     },
-    method = 'NULL_LS_FORMATTING',
+    method = FORMATTING,
     filetypes = { "javascript", "javascriptreact" },
     generator_opts = {
       command = "standard",
