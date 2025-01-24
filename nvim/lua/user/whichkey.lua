@@ -1,6 +1,7 @@
 local M = {
   "folke/which-key.nvim",
   event = "VeryLazy",
+  lazy = false,
   dependencies = {
     "echasnovski/mini.icons",
   },
