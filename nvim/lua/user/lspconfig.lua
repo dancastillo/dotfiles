@@ -20,19 +20,16 @@ local function lsp_keymaps(bufnr)
 end
 
 M.on_attach = function(client, bufnr)
-  local keymaps_bufnr = lsp_keymaps(bufnr)
+  lsp_keymaps(bufnr)
 
-  if client.supports_method "textDocument/inlayHint" then
-    -- vim.lsp.inlay_hint.enable(bufnr, true)
-    -- vim.lsp.inlay_hint.enable(true, keymaps_bufnr)
-    vim.lsp.inlay_hint.enable(true)
+  if client.supports_method "textdocument/inlayhint" then
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
   end
 end
 
 M.toggle_inlay_hints = function()
-  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
-  -- vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr))
-  -- vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(bufnr), bufnr)
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.lsp.inlay_hint(bufnr, not vim.lsp.inlay_hint(bufnr))
 end
 
 function M.common_capabilities()
@@ -77,11 +74,6 @@ function M.config()
     { "<leader>ll", "<cmd>lua vim.lsp.codelens.run()<cr>", desc = "CodeLens Action" },
     { "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<cr>", desc = "Quickfix" },
     { "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename" },
-  }
-
-  wk.add {
-    { "<leader>la", group = "LSP" },
-    { "<leader>laa", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action", mode = "v" },
   }
 
   local lspconfig = require "lspconfig"
@@ -140,8 +132,41 @@ function M.config()
     local opts = {
       on_attach = M.on_attach,
       capabilities = M.common_capabilities(),
-      root_dir = util.root_pattern ".git"(fname),
+      root_dir = util.root_pattern(".git"),
     }
+
+     -- https://github.com/typescript-language-server/typescript-language-server
+    if server == "ts_ls" then
+      opts.single_file_support = false
+      opts.root_dir = lspconfig.util.root_pattern(".git")
+
+      opts.settings = {
+        javascript = {
+          inlayHints = {
+            includeInlayEnumMemberValueHints = true,
+            includeInlayFunctionLikeReturnTypeHints = false,
+            includeInlayFunctionParameterTypeHints = false,
+            includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayVariableTypeHints = false,
+          },
+        },
+
+        typescript = {
+          inlayHints = {
+            includeInlayEnumMemberValueHints = true,
+            includeInlayFunctionLikeReturnTypeHints = false,
+            includeInlayFunctionParameterTypeHints = false,
+            includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayVariableTypeHints = false,
+          },
+        },
+      }
+    end
+
 
     local require_ok, settings = pcall(require, "user.lspsettings." .. server)
     if require_ok then
