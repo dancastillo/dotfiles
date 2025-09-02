@@ -1,3 +1,7 @@
+-- Fetch the variable from the shell and assign it into Neovim’s environment table:
+local anthropic_key = os.getenv "ANTHROPIC_API_KEY"
+vim.env.ANTHROPIC_API_KEY = anthropic_key
+
 -- Lsp debug logs
 -- vim.lsp.set_log_level("debug")
 
@@ -7,6 +11,8 @@ require "user.keymaps"
 require "user.autocmds"
 
 spec "user.whichkey"
+spec "user.avante"
+spec "user.opencode"
 spec "user.mason"
 spec "user.lspconfig"
 spec "user.colorscheme"
