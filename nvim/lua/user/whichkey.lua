@@ -79,6 +79,7 @@ function M.config()
     { "<leader>b", group = "Buffers" },
     { "<leader>d", group = "Debug" },
     { "<leader>f", group = "Find" },
+    { "<leader>o", group = "Opencode" },
     { "<leader>g", group = "Git" },
     { "<leader>l", group = "LSP" },
     { "<leader>p", group = "Plugins" },
