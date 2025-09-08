@@ -118,7 +118,14 @@ function M.config()
 
   vim.diagnostic.config(default_diagnostic_config)
 
-  for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config(), "signs", "values") or {}) do
+  local cfg = vim.diagnostic.config() or {}
+  local signs = {}
+
+  if type(cfg.signs) == "table" and type(cfg.signs.values) == "table" then
+    signs = cfg.signs.values
+  end
+
+  for _, sign in ipairs(signs) do
     vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
   end
 
