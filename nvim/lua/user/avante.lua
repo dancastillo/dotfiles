@@ -46,15 +46,36 @@ local M = {
 M.config = function()
   require("avante").setup {
     ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
-    provider = "claude", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
-    ---@alias Mode "agentic" | "legacy"
-    mode = "legacy",
-    claude = {
-      endpoint = "https://api.anthropic.com",
-      model = "claude-3-5-sonnet-20241022",
-      temperature = 0,
-      max_tokens = 4096,
+    provider = "claude",
+    providers = {
+      claude = {
+        endpoint = "https://api.anthropic.com",
+        model = "claude-3-5-sonnet-20241022",
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 4096,
+            -- max_tokens = 20480,
+          },
+      },
+      moonshot = {
+        endpoint = "https://api.moonshot.ai/v1",
+        model = "kimi-k2-0711-preview",
+        timeout = 30000, -- Timeout in milliseconds
+        extra_request_body = {
+          temperature = 0.75,
+          max_tokens = 32768,
+        },
+      },
     },
+    -- ---@alias Mode "agentic" | "legacy"
+    -- mode = "legacy",
+    -- claude = {
+    --   endpoint = "https://api.anthropic.com",
+    --   model = "claude-3-5-sonnet-20241022",
+    --   temperature = 0,
+    --   max_tokens = 4096,
+    -- },
     behavior = {
       auto_suggestions = false, -- Experimental stage
       auto_set_highlight_group = true,
@@ -64,6 +85,10 @@ M.config = function()
       minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
       enable_token_counting = false, -- Whether to enable token counting. Default to true.
     },
+    rules = {
+    project_dir = '.avante/rules', -- relative to project root, can also be an absolute path
+    global_dir = '~/.config/avante/rules', -- absolute path
+  },
   }
 end
 

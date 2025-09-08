@@ -4,7 +4,6 @@ local M = {
     { "folke/snacks.nvim", opts = { input = { enabled = true } } },
   },
 }
-
 function M.config()
   local wk = require "which-key"
   wk.add {
@@ -85,8 +84,14 @@ function M.config()
     },
   }
 
-  local opencode = require "opencode"
-  opencode.setup {}
+  -- `opencode.nvim` passes options via a global variable instead of `setup()` for faster startup
+  ---@type opencode.Opts
+  vim.g.opencode_opts = {
+    -- Your configuration, if any — see `lua/opencode/config.lua`
+  }
+
+  -- Required for `opts.auto_reload`
+  vim.opt.autoread = true
 end
 
 return M
