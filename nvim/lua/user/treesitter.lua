@@ -1,66 +1,65 @@
 local M = {
   "nvim-treesitter/nvim-treesitter",
   event = { "BufReadPost", "BufNewFile" },
-  commit = "afa103385a2b5ef060596ed822ef63276ae88016",
   build = ":TSUpdate",
   dependencies = {
     {
       "nvim-treesitter/nvim-treesitter-textobjects",
       event = "VeryLazy",
-      commit = "78c49ca7d2f7ccba2115c11422c037713c978ad1",
     },
     {
       "JoosepAlviste/nvim-ts-context-commentstring",
       event = "VeryLazy",
-      commit = "92e688f013c69f90c9bbd596019ec10235bc51de",
     },
     {
       "windwp/nvim-ts-autotag",
       event = "VeryLazy",
-      commit = "6be1192965df35f94b8ea6d323354f7dc7a557e4",
     },
     {
       "windwp/nvim-autopairs",
       event = "InsertEnter",
-      commit = "f6c71641f6f183427a651c0ce4ba3fb89404fa9e",
     },
   },
 }
 function M.config()
-  require("nvim-treesitter.configs").setup {
-    ensure_installed = { "javascript", "typescript", "lua", "markdown", "markdown_inline", "bash", "vim", "html" }, -- put the language you want in this array
-    ignore_install = { "" },
+  local ts_configs = require("nvim-treesitter.configs")
+
+  ---@type TSConfig
+  local opts = {
+    modules = {},          -- satisfy LuaLS
+    ignore_install = {},   -- satisfy LuaLS (empty list = default)
+
+    ensure_installed = {
+      "javascript", "typescript", "lua", "markdown", "markdown_inline", "bash", "vim", "html",
+      -- "tsx",
+    },
     sync_install = false,
     auto_install = false,
+
     highlight = {
       enable = true,
       disable = { "markdown" },
       additional_vim_regex_highlighting = false,
     },
 
-    indent = { enable = true },
-
-    matchup = {
-      enable = { "astro" },
-      disable = { "lua" },
-    },
-
-    autotag = { enable = true },
-
-    context_commentstring = {
+    indent = {
       enable = true,
-      enable_autocmd = false,
+      disable = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
     },
 
-    autopairs = { enable = true },
+    matchup = { enable = true },
+    -- autotag = { enable = true },
+
+    -- context_commentstring = {
+    --   enable = true,
+    --   enable_autocmd = false,
+    -- },
 
     textobjects = {
       select = {
         enable = true,
-        -- Automatically jump forward to textobj, similar to targets.vim
         lookahead = true,
         keymaps = {
-          -- You can use the capture groups defined in textobjects.scm
           ["af"] = "@function.outer",
           ["if"] = "@function.inner",
           ["at"] = "@class.outer",
@@ -86,35 +85,19 @@ function M.config()
         },
       },
     },
-
-    modules = {},
   }
 
-  -- local configs = require "nvim-treesitter.configs"
-  --
-  -- configs.setup {
-  --   modules = {
-  --   --
-  --   --
-  --   --   rainbow = {
-  --   --     enable = false,
-  --   --     query = {
-  --   --       "rainbow-parens",
-  --   --     },
-  --   --     strategy = require("ts-rainbow").strategy.global,
-  --   --     hlgroups = {
-  --   --       -- "TSRainbowRed",
-  --   --       "TSRainbowBlue",
-  --   --       -- "TSRainbowOrange",
-  --   --       -- "TSRainbowCoral",
-  --   --       "TSRainbowPink",
-  --   --       "TSRainbowYellow",
-  --   --       -- "TSRainbowViolet",
-  --   --       -- "TSRainbowGreen",
-  --   --     },
-  --   --   },
-  --   },
-  -- }
+  ts_configs.setup(opts)
+
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    callback = function()
+      -- vim.opt_local.formatoptions:remove({ "t" })
+      -- vim.opt_local.formatoptions:append({ "o", "r", "c" })
+      vim.opt_local.autoindent = true
+      vim.opt_local.smartindent = true
+    end,
+  })
 end
 
 return M
