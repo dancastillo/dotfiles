@@ -25,15 +25,17 @@ function M.config()
       },
       buftypes = { "terminal", "nofile" },
     },
+    scope = { enabled = false },
+    indent = { char = icons.ui.LineMiddle },
     -- char = icons.ui.LineMiddle,
     -- context_char = icons.ui.LineMiddle,
-
+    --
     -- show_trailing_blankline_indent = false,
     -- remove_blankline_trail = true,
 
     -- show_first_indent_level = true,
-    -- use_treesitter = true,
     -- show_current_context = true,
+    -- use_treesitter = true,
   }
 
   -- indent = { char = icons.ui.LineMiddle },
