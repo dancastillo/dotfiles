@@ -43,7 +43,7 @@ local function lsp_keymaps(bufnr)
   map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "LSP: Code Action")
 
   -- Diagnostics (Neovim 0.11+ safe)
-  map("n", "gl", function() vim.diagnostic.open_float({ border = "rounded", focusable = false }) end, "Diagnostics: Float")
+  map("n", "gl", function() vim.diagnostic.open_float({ border = "rounded" }) end, "Diagnostics: Float")
   map("n", "[d", function() vim.diagnostic.goto_prev({ wrap = true }) end, "Diagnostics: Prev")
   map("n", "]d", function() vim.diagnostic.goto_next({ wrap = true }) end, "Diagnostics: Next")
   map("n", "<leader>q", vim.diagnostic.setloclist, "Diagnostics: To Loclist")
