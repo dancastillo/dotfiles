@@ -55,7 +55,7 @@ vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
 
-vim.opt.updatetime = 50
+vim.opt.updatetime = 100
 
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1

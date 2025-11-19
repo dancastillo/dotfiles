@@ -5,6 +5,7 @@ local M = {
   dependencies = {
     "zbirenbaum/copilot-cmp",
   },
+  commit = '4725916b1e08a0cfed8fa6d9691ccd1609a347ee'
 }
 
 function M.config()
@@ -28,7 +29,7 @@ function M.config()
     suggestion = {
       enabled = true,
       auto_trigger = true,
-      debounce = 75,
+      debounce = 150,
       keymap = {
         accept = "<M-l>",
         accept_word = false,

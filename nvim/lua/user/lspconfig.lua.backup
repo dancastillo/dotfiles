@@ -24,6 +24,12 @@ local function lsp_keymaps(bufnr)
   local map = function(mode, lhs, rhs, desc)
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, noremap = true, desc = desc })
   end
+  -- map("n", "gD", vim.lsp.buf.declaration, "LSP: Declaration")
+  -- map("n", "gd", vim.lsp.buf.definition, "LSP: Definition")
+  -- map("n", "K",  vim.lsp.buf.hover, "LSP: Hover")
+  -- map("n", "gI", vim.lsp.buf.implementation, "LSP: Implementation")
+  -- map("n", "gr", vim.lsp.buf.references, "LSP: References")
+  -- map("n", "gl", vim.diagnostic.open_float, "Diagnostics: Float")
 
    -- Jumps
   map("n", "gD", vim.lsp.buf.declaration, "LSP: Declaration")
@@ -114,10 +120,7 @@ function M.config()
   -- Diagnostics UI (Neovim 0.11+): remove invalid "active" key, keep per-severity text
   local icons = require("user.icons")
   vim.diagnostic.config({
-    virtual_text = {
-      spacing = 4,
-      prefix = "●",
-    },
+    virtual_text = false,
     update_in_insert = false,
     underline = true,
     severity_sort = true,
@@ -215,6 +218,9 @@ function M.config()
             includeInlayEnumMemberValueHints = true,
             includeInlayFunctionLikeReturnTypeHints = false,
             includeInlayFunctionParameterTypeHints = false,
+            -- includeInlayParameterNameHints = "all",
+            -- includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            -- includeInlayPropertyDeclarationTypeHints = true,
             includeInlayVariableTypeHints = false,
           },
         },
@@ -223,6 +229,9 @@ function M.config()
             includeInlayEnumMemberValueHints = true,
             includeInlayFunctionLikeReturnTypeHints = false,
             includeInlayFunctionParameterTypeHints = false,
+            -- includeInlayParameterNameHints = "all",
+            -- includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            -- includeInlayPropertyDeclarationTypeHints = true,
             includeInlayVariableTypeHints = false,
           },
           -- Better perf & correctness in monorepos
@@ -231,12 +240,6 @@ function M.config()
             disableAutomaticTypeAcquisition = true,
             disableAutomaticTypingAcquisition = true,
             disableSolutionSearching = true,
-            watchOptions = {
-              watchFile = "useFsEvents",
-              watchDirectory = "useFsEvents",
-              fallbackPolling = false,
-              synchronousWatchDirectory = false,
-            },
           },
           format = { enable = false }, -- prefer prettier/eslint
         },

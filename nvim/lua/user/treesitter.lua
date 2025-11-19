@@ -5,15 +5,15 @@ local M = {
   dependencies = {
     {
       "nvim-treesitter/nvim-treesitter-textobjects",
-      event = "VeryLazy",
+      lazy = true,
     },
     {
       "JoosepAlviste/nvim-ts-context-commentstring",
-      event = "VeryLazy",
+      lazy = true,
     },
     {
       "windwp/nvim-ts-autotag",
-      event = "VeryLazy",
+      event = "InsertEnter",
     },
     {
       "windwp/nvim-autopairs",
@@ -31,7 +31,7 @@ function M.config()
 
     ensure_installed = {
       "javascript", "typescript", "lua", "markdown", "markdown_inline", "bash", "vim", "html",
-      -- "tsx",
+      "tsx",
     },
     sync_install = false,
     auto_install = false,

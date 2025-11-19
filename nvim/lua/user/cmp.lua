@@ -4,37 +4,26 @@ local M = {
   dependencies = {
     {
       "hrsh7th/cmp-nvim-lsp",
-      event = "InsertEnter",
-    },
-    {
-      "hrsh7th/cmp-emoji",
-      event = "InsertEnter",
+      lazy = true,
     },
     {
       "hrsh7th/cmp-buffer",
-      event = "InsertEnter",
+      lazy = true,
     },
     {
       "hrsh7th/cmp-path",
-      event = "InsertEnter",
-    },
-    {
-      "hrsh7th/cmp-cmdline",
-      event = "InsertEnter",
+      lazy = true,
     },
     {
       "saadparwaiz1/cmp_luasnip",
-      event = "InsertEnter",
+      lazy = true,
     },
     {
       "L3MON4D3/LuaSnip",
-      event = "InsertEnter",
+      lazy = true,
       dependencies = {
         "rafamadriz/friendly-snippets",
       },
-    },
-    {
-      "hrsh7th/cmp-nvim-lua",
     },
   },
 }
@@ -138,15 +127,11 @@ function M.config()
       end,
     },
     sources = {
-      { name = "copilot" },
-      { name = "nvim_lsp" },
-      { name = "luasnip" },
-      { name = "cmp_tabnine" },
-      { name = "nvim_lua" },
-      { name = "buffer" },
-      { name = "path" },
-      { name = "calc" },
-      { name = "emoji" },
+      { name = "copilot", priority = 100 },
+      { name = "nvim_lsp", priority = 90 },
+      { name = "luasnip", priority = 80 },
+      { name = "buffer", priority = 50, max_item_count = 5 },
+      { name = "path", priority = 40 },
     },
     confirm_opts = {
       behavior = cmp.ConfirmBehavior.Replace,
@@ -163,6 +148,14 @@ function M.config()
     },
     experimental = {
       ghost_text = false,
+    },
+    performance = {
+      debounce = 60,
+      throttle = 30,
+      fetching_timeout = 500,
+      confirm_resolve_timeout = 80,
+      async_budget = 1,
+      max_view_entries = 200,
     },
   }
 end

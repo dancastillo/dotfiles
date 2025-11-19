@@ -67,8 +67,8 @@ function M.config()
   local augroup = vim.api.nvim_create_augroup("HardFormatOnSave", {})
 
   null_ls.setup({
-    debug = true,
-    log_level = "trace",
+    debug = false,
+    log_level = "warn",
     sources = { prettier_builtin },
     on_attach = function(client, bufnr)
       if not client.supports_method("textDocument/formatting") then
@@ -80,19 +80,16 @@ function M.config()
         group = augroup,
         buffer = bufnr,
         callback = function()
-          print("[FMT] BufWritePre (buf=" .. bufnr .. ")")
           local ok, err = pcall(function()
             vim.lsp.buf.format({
               bufnr = bufnr,
-              async = false,      -- block so we see completion or failure
-              timeout_ms = 8000,
+              async = true,
+              timeout_ms = 3000,
               filter = function(c) return c.name == "null-ls" end,
             })
           end)
           if not ok then
-            vim.notify("[FMT] format threw: " .. tostring(err), vim.log.levels.ERROR)
-          else
-            print("[FMT] format done (buf=" .. bufnr .. ")")
+            vim.notify("[FMT] format error: " .. tostring(err), vim.log.levels.WARN)
           end
         end,
       })
@@ -100,14 +97,12 @@ function M.config()
   })
 
   vim.api.nvim_create_user_command("FormatNow", function()
-    print("[FMT] Manual start")
     vim.lsp.buf.format({
       bufnr = 0,
       async = false,
-      timeout_ms = 8000,
+      timeout_ms = 3000,
       filter = function(c) return c.name == "null-ls" end,
     })
-    print("[FMT] Manual end")
   end, {})
 end
 
