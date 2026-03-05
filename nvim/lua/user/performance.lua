@@ -12,8 +12,9 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     if file_size > 1024 * 1024 then -- 1MB
       vim.opt_local.swapfile = false
       vim.opt_local.undofile = false
-      vim.opt_local.buftype = "nowrite"
       vim.opt_local.wrap = false
+      vim.opt_local.foldmethod = "manual"
+      vim.opt_local.synmaxcol = 200
     end
   end,
 })

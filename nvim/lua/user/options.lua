@@ -8,7 +8,12 @@ vim.g.maplocalleader = ' '
 vim.opt.relativenumber = true
 
 vim.keymap.set('n', '<space>f', function()
-	vim.lsp.buf.format { async = true }
+  local ok, conform = pcall(require, "conform")
+  if ok then
+    conform.format { async = true, lsp_fallback = true }
+    return
+  end
+  vim.lsp.buf.format { async = true }
 end, { noremap = true, silent = true })
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -41,9 +46,9 @@ vim.o.smartcase = true
 -- Keep signcolumn on by default
 vim.wo.signcolumn = 'yes'
 
--- Decrease update time
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
+-- Decrease update time (kept moderate to avoid excessive CursorHold CPU)
+vim.o.updatetime = 300
+vim.o.timeoutlen = 500
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -55,7 +60,6 @@ vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
 
-vim.opt.updatetime = 100
 
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1

@@ -5,6 +5,7 @@ local keymap = vim.keymap.set
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 keymap({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+keymap('n', '<leader>s', '<Nop>', { silent = true, desc = 'Search prefix' })
 
 -- Remap for dealing with word wrap
 keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -51,4 +52,3 @@ keymap('n', 'N', 'Nzzzv')
 
 -- Replace word that was one
 vim.keymap.set("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-

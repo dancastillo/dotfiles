@@ -1,5 +1,9 @@
 local M = {
   "SmiteshP/nvim-navbuddy",
+  cmd = { "Navbuddy" },
+  keys = {
+    { "<leader>n", "<cmd>Navbuddy<cr>", desc = "Nav" },
+  },
   dependencies = {
     "SmiteshP/nvim-navic",
     "MunifTanjim/nui.nvim",
@@ -7,11 +11,6 @@ local M = {
 }
 
 function M.config()
-  local wk = require "which-key"
-  wk.add {
-    { "<leader>n", "<cmd>Navbuddy<cr>", desc = "Nav" },
-  }
-
   local navbuddy = require "nvim-navbuddy"
   -- local actions = require("nvim-navbuddy.actions")
   navbuddy.setup {
@@ -19,7 +18,7 @@ function M.config()
       border = "rounded",
     },
     icons = require("user.icons").kind,
-    lsp = { auto_attach = true },
+    lsp = { auto_attach = false },
   }
 
   local opts = { noremap = true, silent = true }

@@ -1,23 +1,11 @@
 local M = {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPost", "BufNewFile" },
+  lazy = false,
   build = ":TSUpdate",
   dependencies = {
     {
       "nvim-treesitter/nvim-treesitter-textobjects",
       lazy = true,
-    },
-    {
-      "JoosepAlviste/nvim-ts-context-commentstring",
-      lazy = true,
-    },
-    {
-      "windwp/nvim-ts-autotag",
-      event = "InsertEnter",
-    },
-    {
-      "windwp/nvim-autopairs",
-      event = "InsertEnter",
     },
   },
 }

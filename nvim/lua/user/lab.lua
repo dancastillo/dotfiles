@@ -1,5 +1,6 @@
 local M = {
   "0x100101/lab.nvim",
+  cmd = { "Lab" },
   build = "cd js && npm ci",
 }
 

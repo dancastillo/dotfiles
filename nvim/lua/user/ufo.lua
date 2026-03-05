@@ -63,6 +63,8 @@ function M.config()
   local ftMap = {
     -- typescriptreact = { "lsp", "treesitter" },
     -- python = { "indent" },
+    typescript = { "treesitter", "indent" },
+    typescriptreact = { "treesitter", "indent" },
     yaml = "",
   }
 

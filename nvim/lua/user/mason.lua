@@ -1,5 +1,6 @@
 local M = {
   "williamboman/mason-lspconfig.nvim",
+  event = "VeryLazy",
   dependencies = {
     "williamboman/mason.nvim",
     "nvim-lua/plenary.nvim",
@@ -12,6 +13,7 @@ function M.config()
     "cssls",
     "html",
     "ts_ls",
+    "eslint",
     "bashls",
     "jsonls",
     "yamlls",
@@ -26,6 +28,7 @@ function M.config()
   require("mason-lspconfig").setup {
     ensure_installed = servers,
     automatic_installation = true,
+    automatic_enable = false,
   }
 end
 

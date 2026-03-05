@@ -1,14 +1,20 @@
 local M = {
   "nvim-tree/nvim-tree.lua",
-  event = "VeryLazy",
+  cmd = {
+    "NvimTreeToggle",
+    "NvimTreeFocus",
+    "NvimTreeFindFile",
+    "NvimTreeFindFileToggle",
+    "NvimTreeClose",
+    "NvimTreeCollapse",
+    "NvimTreeRefresh",
+  },
+  keys = {
+    { "<leader>e", "<cmd>NvimTreeToggle<CR>", desc = "Explorer" },
+  },
 }
 
 function M.config()
-  local wk = require "which-key"
-  wk.add {
-    { "<leader>e", "<cmd>NvimTreeToggle<CR>", desc = "Explorer" },
-  }
-
   local function my_on_attach(bufnr)
     local api = require "nvim-tree.api"
 
@@ -127,7 +133,7 @@ function M.config()
     },
 
     log = {
-      enable = true,
+      enable = false,
       truncate = true,
       types = {
         diagnostics = true,

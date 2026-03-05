@@ -77,23 +77,6 @@ function M.toggle_ts_diagnostics()
   end
 end
 
--- Auto-fix common TypeScript sync issues
-vim.api.nvim_create_autocmd({ "BufWritePost", "FocusGained" }, {
-  pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
-  callback = function()
-    -- Clear stale diagnostics after file save or focus gain
-    vim.defer_fn(function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      local diagnostics = vim.diagnostic.get(bufnr)
-      
-      -- Only clear if there are diagnostics (prevents unnecessary clears)
-      if #diagnostics > 0 then
-        vim.diagnostic.reset(nil, bufnr)
-      end
-    end, 500)
-  end,
-})
-
 -- Force TypeScript refresh on external file changes
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   pattern = { "tsconfig.json", "package.json" },

@@ -82,7 +82,6 @@ local M = {
 }
 
 function M.config()
-  print(vim.fn.stdpath)
   local wk = require "which-key"
   wk.add {
     { "<leader>dC", "<cmd>lua require'dap'.run_to_cursor()<cr>", desc = "Run To Cursor" },
@@ -102,7 +101,7 @@ function M.config()
   }
 
   local dap = require "dap"
-  dap.set_log_level "TRACE"
+  dap.set_log_level "ERROR"
 
   dap.adapters.node2 = {
     type = "executable",

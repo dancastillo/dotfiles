@@ -1,5 +1,78 @@
 local M = {
   "nvim-neotest/neotest",
+  cmd = { "Neotest", "NeotestRun", "NeotestSummary", "NeotestOutput", "NeotestOutputPanel", "NeotestStop" },
+  keys = {
+    {
+      "<leader>tD",
+      function()
+        require("neotest").run.run_last { strategy = "dap" }
+      end,
+      desc = "Run Last Test",
+    },
+    {
+      "<leader>ta",
+      function()
+        require("neotest").run.attach()
+      end,
+      desc = "Attach Test",
+    },
+    {
+      "<leader>td",
+      function()
+        require("neotest").run.run { vim.fn.expand "%", strategy = "dap" }
+      end,
+      desc = "Debug Test",
+    },
+    {
+      "<leader>tf",
+      function()
+        require("neotest").run.run(vim.fn.expand "%")
+      end,
+      desc = "Test File",
+    },
+    {
+      "<leader>tl",
+      function()
+        require("neotest").run.run_last()
+      end,
+      desc = "Run Last Test",
+    },
+    {
+      "<leader>to",
+      function()
+        require("neotest").output.open()
+      end,
+      desc = "Output Window",
+    },
+    {
+      "<leader>tp",
+      function()
+        require("neotest").output_panel.toggle()
+      end,
+      desc = "Output Panel",
+    },
+    {
+      "<leader>ts",
+      function()
+        require("neotest").run.stop()
+      end,
+      desc = "Test Stop",
+    },
+    {
+      "<leader>tt",
+      function()
+        require("neotest").run.run()
+      end,
+      desc = "Test Nearest",
+    },
+    {
+      "<leader>ty",
+      function()
+        require("neotest").summary.toggle()
+      end,
+      desc = "Summary",
+    },
+  },
   dependencies = {
     "nvim-lua/plenary.nvim",
     "antoinemadec/FixCursorHold.nvim",
@@ -11,24 +84,6 @@ local M = {
 }
 
 function M.config()
-  local wk = require "which-key"
-  wk.add {
-    { "<leader>tD", "<cmd>lua require'neotest'.run.run_last({ strategy = 'dap' })<CR>", desc = "Run Last Test" },
-    { "<leader>ta", "<cmd>lua require'neotest'.run.attach()<CR>", desc = "Attach Test" },
-    {
-      "<leader>td",
-      "<cmd>lua require'neotest'.run.run({vim.fn.expand('%'), strategy = 'dap'})<CR>",
-      desc = "Debug Test",
-    },
-    { "<leader>tf", "<cmd>lua require'neotest'.run.run(vim.fn.expand('%'))<CR>", desc = "Test File" },
-    { "<leader>tl", "<cmd>lua require'neotest'.run.run_last()<CR>", desc = "Run Last Test" },
-    { "<leader>to", "<cmd>lua require'neotest'.output.open()<CR>", desc = "Output Window" },
-    { "<leader>tp", "<cmd>lua require'neotest'.output_panel.toggle()<CR>", desc = "Output Panel" },
-    { "<leader>ts", "<cmd>lua require'neotest'.run.stop()<CR>", desc = "Test Stop" },
-    { "<leader>tt", "<cmd>lua require'neotest'.run.run()<CR>", desc = "Test Nearest" },
-    { "<leader>ty", "<cmd>lua require'neotest'.summary.toggle()<CR>", desc = "Summary" },
-  }
-
   require("neotest").setup {
     adapters = {
       require "neotest-jest" {
