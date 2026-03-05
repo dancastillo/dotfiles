@@ -1,34 +1,34 @@
+local telescope_keys = {
+  { "<leader>gC", "<cmd>Telescope git_bcommits<cr>", desc = "Checkout commit(for current file)" },
+  { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+  { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
+  { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
+  { "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Workspace Symbols" },
+  { "<leader>le", "<cmd>Telescope quickfix<cr>", desc = "Telescope Quickfix" },
+  { "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
+  { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
+  { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Highlights" },
+  { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
+  { "<leader>sb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+  { "<leader>sc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
+  { "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+  { "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Find Grep" },
+  { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
+  { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
+  { "<leader>sl", "<cmd>Telescope resume<cr>", desc = "Resume Search" },
+  { "<leader>sp", "<cmd>lua require('telescope').extensions.projects.projects()<cr>", desc = "Projects" },
+  { "<leader>sr", "<cmd>Telescope oldfiles<cr>", desc = "Recent File" },
+  { "<leader>sw", "<cmd>Telescope grep_string<cr>", desc = "Find Word" },
+}
+
 local M = {
   "nvim-telescope/telescope.nvim",
   cmd = "Telescope",
+  keys = telescope_keys,
   dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true } },
 }
 
 function M.config()
-  local wk = require "which-key"
-  wk.add {
-    { "<leader>gC", "<cmd>Telescope git_bcommits<cr>", desc = "Checkout commit(for current file)" },
-    { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
-    { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
-    { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
-    { "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Workspace Symbols" },
-    { "<leader>le", "<cmd>Telescope quickfix<cr>", desc = "Telescope Quickfix" },
-    { "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
-    { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-    { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Highlights" },
-    { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
-    { "<leader>sb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-    { "<leader>sc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
-    { "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-    { "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Find Grep" },
-    { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
-    { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-    { "<leader>sl", "<cmd>Telescope resume<cr>", desc = "Resume Search" },
-    { "<leader>sp", "<cmd>lua require('telescope').extensions.projects.projects()<cr>", desc = "Projects" },
-    { "<leader>sr", "<cmd>Telescope oldfiles<cr>", desc = "Recent File" },
-    { "<leader>sw", "<cmd>Telescope grep_string<cr>", desc = "Find Word" },
-  }
-
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "TelescopeResults",
     callback = function(ctx)

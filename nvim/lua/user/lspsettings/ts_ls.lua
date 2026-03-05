@@ -1,6 +1,9 @@
 return {
   settings = {
     typescript = {
+      diagnostics = {
+        ignoredCodes = { 2593 },
+      },
       preferences = {
         includeCompletionsForModuleExports = true,
         includeCompletionsWithInsertText = true,
@@ -34,6 +37,9 @@ return {
       format = { enable = false }, -- prefer prettier/eslint
     },
     javascript = {
+      diagnostics = {
+        ignoredCodes = { 2593 },
+      },
       preferences = {
         includeCompletionsForModuleExports = true,
         includeCompletionsWithInsertText = true,

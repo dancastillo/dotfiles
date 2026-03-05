@@ -43,9 +43,23 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+local uv = vim.uv or vim.loop
+local last_checktime = 0
+local checktime_throttle_ns = 2 * 1e9
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
   pattern = { "*" },
-  callback = function()
+  callback = function(args)
+    if vim.bo[args.buf].buftype ~= "" then
+      return
+    end
+
+    local now = uv.hrtime()
+    if now - last_checktime < checktime_throttle_ns then
+      return
+    end
+    last_checktime = now
+
     vim.cmd "checktime"
   end,
 })
@@ -64,9 +78,12 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
--- luasnip helper (optimized with higher updatetime)
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
+-- luasnip helper (run only in insert mode to reduce idle CPU)
+vim.api.nvim_create_autocmd({ "CursorHoldI" }, {
   callback = function()
+    if vim.fn.mode() ~= "i" then
+      return
+    end
     local status_ok, luasnip = pcall(require, "luasnip")
     if not status_ok then
       return

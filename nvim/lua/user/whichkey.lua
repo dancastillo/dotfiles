@@ -1,7 +1,6 @@
 local M = {
   "folke/which-key.nvim",
   event = "VeryLazy",
-  lazy = false,
   dependencies = {
     "echasnovski/mini.icons",
   },
@@ -79,6 +78,7 @@ function M.config()
     { "<leader>b", group = "Buffers" },
     { "<leader>d", group = "Debug" },
     { "<leader>f", group = "Find" },
+    { "<leader>s", group = "Search" },
     { "<leader>o", group = "Opencode" },
     { "<leader>g", group = "Git" },
     { "<leader>l", group = "LSP" },

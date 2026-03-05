@@ -11,10 +11,8 @@ local M = {
 
 function M.config()
   require("barbecue").setup {
+    attach_navic = false,
     icons = require("user.icons").kind,
-    lsp = {
-      auto_attach = true,
-    },
     click = true,
     separator = " " .. require("user.icons").ui.ChevronRight .. " ",
     depth_limit = 0,

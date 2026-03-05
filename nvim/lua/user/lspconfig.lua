@@ -46,17 +46,15 @@ end
 M.on_attach = function(client, bufnr)
   lsp_keymaps(bufnr)
 
-  -- Block Deno diagnostics if it ever attaches (we also stop it below).
-  if client.name == "denols" then
-    client.handlers["textDocument/publishDiagnostics"] = function() end
-    client.handlers["textDocument/diagnostic"] = function() end
-    client.handlers["workspace/diagnostic/refresh"] = function() end
-  end
-
   -- Fix TypeScript server errors with outlining spans
   if client.name == "ts_ls" then
     -- Disable problematic features that cause "length < 0" errors
     client.server_capabilities.documentSymbolProvider = false
+
+    -- Folding requests can also hit outlining spans; disable by default.
+    if vim.g.ts_ls_disable_folding ~= false then
+      client.server_capabilities.foldingRangeProvider = false
+    end
     
     -- Override handlers to catch and suppress errors
     client.handlers["textDocument/documentSymbol"] = function(err, result, ctx, config)
@@ -64,6 +62,13 @@ M.on_attach = function(client, bufnr)
         return nil
       end
       return vim.lsp.handlers["textDocument/documentSymbol"](err, result, ctx, config)
+    end
+
+    client.handlers["textDocument/foldingRange"] = function(err, result, ctx, config)
+      if err and err.message and err.message:match("length < 0") then
+        return nil
+      end
+      return vim.lsp.handlers["textDocument/foldingRange"](err, result, ctx, config)
     end
   end
 
@@ -100,6 +105,11 @@ function M.config()
   wk.add({
     { "<leader>la", vim.lsp.buf.code_action,                   desc = "Code Action",          mode = "n" },
     { "<leader>lf", function()
+        local ok, conform = pcall(require, "conform")
+        if ok then
+          conform.format({ async = true, lsp_fallback = true })
+          return
+        end
         vim.lsp.buf.format({ async = true, filter = function(c) return c.name ~= "typescript-tools" end })
       end,                                                    desc = "Format",               mode = "n" },
     { "<leader>lh", M.toggle_inlay_hints,                      desc = "Toggle Inlay Hints",   mode = "n" },
@@ -144,28 +154,80 @@ function M.config()
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
   require("lspconfig.ui.windows").default_options.border = "rounded"
 
-  local lspconfig = require("lspconfig")
-  local util      = require("lspconfig.util")
+  local util = require("lspconfig.util")
 
-  -- Deno detection
-  local function is_deno_project(fname)
+  local function bufname(bufnr)
+    return vim.api.nvim_buf_get_name(bufnr)
+  end
+
+  local function deno_root(bufnr)
+    local fname = bufname(bufnr)
+    if fname == "" then return nil end
     return util.root_pattern("deno.json", "deno.jsonc")(fname)
   end
 
   -- In a monorepo, keep TS roots tight to project/package (not git root)
-  local function ts_root_dir(fname)
-    if is_deno_project(fname) then return nil end
-    return util.root_pattern("tsconfig.json", "package.json")(fname)
-           or util.find_node_modules_ancestor(fname)
+  local function ts_root_dir(bufnr, on_dir)
+    if vim.g.enable_denols == true and deno_root(bufnr) then
+      return
+    end
+    local fname = bufname(bufnr)
+    if fname == "" then return end
+    local root = util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
+      or util.find_node_modules_ancestor(fname)
+    if root then
+      on_dir(root)
+    end
   end
 
-  -- Keep denols disabled by default (and stop it if spawned)
-  lspconfig.denols.setup({
+  local function denols_root_dir(bufnr, on_dir)
+    if vim.g.enable_denols ~= true then
+      return
+    end
+    local root = deno_root(bufnr)
+    if root then
+      on_dir(root)
+    end
+  end
+
+  local function ts_ls_init_options()
+    local init_options = {
+      hostInfo = "neovim",
+      -- tsserver options exposed by typescript-language-server init options.
+      disableAutomaticTypingAcquisition = true,
+      maxTsServerMemory = 8192,
+      tsserver = {
+        -- Reduce outline-based requests that can trigger tsserver span errors.
+        useSyntaxServer = "never",
+      },
+    }
+
+    if vim.g.ts_ls_enable_logging then
+      local log_dir = vim.fn.stdpath("log") .. "/tsserver"
+      vim.fn.mkdir(log_dir, "p")
+      init_options.tsserver.logDirectory = log_dir
+      init_options.logVerbosity = "verbose"
+      init_options.tsserver.trace = "messages"
+    end
+
+    return init_options
+  end
+
+  local function ts_ls_cmd()
+    local cmd = { "typescript-language-server", "--stdio" }
+    local tsserver_path = vim.g.ts_ls_tsserver_path
+    if type(tsserver_path) == "string" and tsserver_path ~= "" then
+      table.insert(cmd, "--tsserver-path")
+      table.insert(cmd, tsserver_path)
+    end
+    return cmd
+  end
+
+  local deno_opts = {
     on_attach = M.on_attach,
     capabilities = M.common_capabilities(),
-    autostart = false,
-    single_file_support = false,
-    root_dir = util.root_pattern("deno.json", "deno.jsonc"),
+    workspace_required = true,
+    root_dir = denols_root_dir,
     settings = {
       deno = {
         enable = true,
@@ -173,23 +235,18 @@ function M.config()
         suggest = { imports = { autoDiscover = true } },
       },
     },
-  })
-
-  vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(args)
-      local client = vim.lsp.get_client_by_id(args.data.client_id)
-      if client and client.name == "denols" then
-        pcall(vim.diagnostic.reset, nil, args.buf) -- reset all namespaces for this buffer
-        client.stop(true)
-      end
-    end,
-  })
+  }
+  vim.lsp.config("denols", deno_opts)
+  if vim.g.enable_denols == true then
+    vim.lsp.enable("denols")
+  end
 
   local servers = {
     "lua_ls",
     "cssls",
     "html",
     "ts_ls",      -- typescript-language-server (new name)
+    "eslint",
     "pyright",
     "bashls",
     "jsonls",
@@ -203,12 +260,22 @@ function M.config()
       on_attach = M.on_attach,
       capabilities = M.common_capabilities(),
       -- Use lightweight roots by default in a monorepo to avoid scanning the world
-      root_dir = util.root_pattern("package.json", ".git"),
+      root_markers = { "package.json", ".git" },
     }
 
     if server == "ts_ls" then
-      opts.single_file_support = false
+      local caps = opts.capabilities or M.common_capabilities()
+      if caps.textDocument then
+        -- Avoid requesting features that rely on outlining spans.
+        caps.textDocument.documentSymbol = nil
+        caps.textDocument.foldingRange = nil
+      end
+      opts.capabilities = caps
+
+      opts.cmd = ts_ls_cmd()
+      opts.workspace_required = true
       opts.root_dir = ts_root_dir
+      opts.init_options = ts_ls_init_options()
       opts.settings = {
         javascript = {
           inlayHints = {
@@ -234,8 +301,14 @@ function M.config()
             watchOptions = {
               watchFile = "useFsEvents",
               watchDirectory = "useFsEvents",
-              fallbackPolling = false,
+              fallbackPolling = "dynamicPriority",
               synchronousWatchDirectory = false,
+              excludeDirectories = {
+                "**/node_modules",
+                "**/.git",
+                "**/dist",
+                "**/build",
+              },
             },
           },
           format = { enable = false }, -- prefer prettier/eslint
@@ -248,7 +321,8 @@ function M.config()
       opts = vim.tbl_deep_extend("force", opts, user_settings)
     end
 
-    lspconfig[server].setup(opts)
+    vim.lsp.config(server, opts)
+    vim.lsp.enable(server)
   end
 end
 
