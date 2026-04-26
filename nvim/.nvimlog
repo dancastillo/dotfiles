@@ -1,0 +1,2 @@
+WRN 2026-03-12T20:48:05.413 ?.31627    server_start:193: Failed to start server: operation not permitted: /var/folders/5q/894pxm1x3ld8by36_b1rt8lh0000gn/T/nvim.dancastillo/8ao9cv/nvim.31627.0
+WRN 2026-03-12T20:49:17.270 ?.32341    server_start:193: Failed to start server: operation not permitted: /var/folders/5q/894pxm1x3ld8by36_b1rt8lh0000gn/T/nvim.dancastillo/pCIBsF/nvim.32341.0

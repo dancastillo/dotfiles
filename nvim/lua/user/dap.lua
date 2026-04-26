@@ -5,6 +5,57 @@ local js_based_languages = {
   "javascriptreact",
 }
 
+local function get_node_path()
+  local node_path = vim.fn.exepath "node"
+  assert(node_path ~= "", "node executable not found for JavaScript debugging")
+  return node_path
+end
+
+local function get_workspace_root()
+  local buffer_name = vim.api.nvim_buf_get_name(0)
+  local search_path = buffer_name ~= "" and vim.fs.dirname(buffer_name) or vim.fn.getcwd()
+  local root_marker = vim.fs.find({ "pnpm-workspace.yaml", ".git" }, {
+    path = search_path,
+    upward = true,
+  })[1]
+
+  return root_marker and vim.fs.dirname(root_marker) or vim.fn.getcwd()
+end
+
+local function get_workspace_out_files()
+  local root = get_workspace_root()
+  return {
+    root .. "/apps/*/dist/**/*.js",
+    root .. "/libs/*/dist/**/*.js",
+  }
+end
+
+local function get_workspace_source_map_locations()
+  local root = get_workspace_root()
+  return {
+    root .. "/**",
+    "!" .. root .. "/**/node_modules/**",
+  }
+end
+
+local function attach_by_port(name, port)
+  return {
+    name = name,
+    type = "pwa-node",
+    request = "attach",
+    address = "127.0.0.1",
+    port = port,
+    cwd = get_workspace_root,
+    restart = true,
+    sourceMaps = true,
+    protocol = "inspector",
+    console = "integratedTerminal",
+    skipFiles = { "<node_internals>/**", "node_modules/**" },
+    outFiles = get_workspace_out_files,
+    resolveSourceMapLocations = get_workspace_source_map_locations,
+  }
+end
+
 local M = {
   "mfussenegger/nvim-dap",
   event = "VeryLazy",
@@ -22,6 +73,9 @@ local M = {
     -- },
     {
       "rcarriga/nvim-dap-ui",
+      dependencies = {
+        "nvim-neotest/nvim-nio",
+      },
     },
     {
       "theHamsta/nvim-dap-virtual-text",
@@ -38,13 +92,12 @@ local M = {
         build = "git reset --hard && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
       },
       config = function()
-        local dap = require "dap"
         local dap_js = require "dap-vscode-js"
 
         ---@diagnostic disable-next-line: missing-fields
         dap_js.setup {
           -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-          node_path = "node",
+          node_path = get_node_path(),
 
           -- Path to vscode-js-debug installation.
           debugger_path = vim.fn.stdpath "data" .. "/lazy/vscode-js-debug",
@@ -54,9 +107,7 @@ local M = {
 
           -- which adapters to register in nvim-dap
           adapters = {
-            "node",
             "pwa-node",
-            "chrome",
             "pwa-chrome",
             "pwa-msedge",
             "pwa-extensionHost",
@@ -103,19 +154,16 @@ function M.config()
   local dap = require "dap"
   dap.set_log_level "ERROR"
 
-  dap.adapters.node2 = {
-    type = "executable",
-    -- command = "node",
-    args = { vim.fn.stdpath "data" .. "/lazy/vscode-js-debug/out/src/vsDebugServer.js" },
-    -- args = { vim.fn.stdpath "data" .. "/mason/packages/js-debug-adapter/js-debug-adapter" },
-  }
+  dap.adapters.node = function(cb, config)
+    local adapter = dap.adapters["pwa-node"]
+    local node_config = vim.tbl_extend("force", config or {}, { type = "pwa-node" })
+    if type(adapter) == "function" then
+      adapter(cb, node_config)
+      return
+    end
 
-  dap.adapters.node = {
-    type = "executable",
-    command = "node",
-    args = { vim.fn.stdpath "data" .. "/lazy/vscode-js-debug/out/src/vsDebugServer.js" },
-    -- args = { vim.fn.stdpath "data" .. "/mason/packages/js-debug-adapter/js-debug-adapter" },
-  }
+    cb(adapter)
+  end
 
   for _, language in ipairs(js_based_languages) do
     dap.configurations[language] = {
@@ -123,7 +171,8 @@ function M.config()
         name = "Attach to existing `node --inspect` process",
         type = "pwa-node",
         request = "attach",
-        cwd = vim.fn.getcwd(),
+        processId = require("dap.utils").pick_process,
+        cwd = "${workspaceFolder}",
         restart = true,
         sourceMaps = true,
         protocol = "inspector",
@@ -145,7 +194,7 @@ function M.config()
         request = "launch",
         name = "Debug Jest Tests",
         -- trace = true, -- include debugger info
-        runtimeExecutable = "node",
+        runtimeExecutable = get_node_path(),
         runtimeArgs = {
           "./node_modules/jest/bin/jest.js",
           "--runInBand",
@@ -159,6 +208,8 @@ function M.config()
         -- resolveSourceMapLocations = {}
         resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
       },
+      attach_by_port("Weaver: Core API (9229)", 9229),
+      attach_by_port("Weaver: Task Agent Worker (9249)", 9249),
       -- Divider for the launch.json derived configs
       {
         name = "----- ↓ launch.json configs ↓ -----",
@@ -169,8 +220,11 @@ function M.config()
   end
 
   if vim.fn.filereadable ".vscode/launch.json" then
-    require("dap.ext.vscode").json_decode = require("overseer.json").decode
     local dap_vscode = require "dap.ext.vscode"
+    local ok, json5 = pcall(require, "json5")
+    if ok and type(json5.parse) == "function" then
+      dap_vscode.json_decode = json5.parse
+    end
     dap_vscode.load_launchjs(nil, {
       ["node"] = js_based_languages,
       ["pwa-node"] = js_based_languages,
